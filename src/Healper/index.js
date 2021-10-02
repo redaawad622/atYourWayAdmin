@@ -4,14 +4,28 @@ Vue.prototype.$imgPath =
     ? "https://api.atyourway.com/" + "storage/images/"
     : "http://localhost:8000/" + "storage/images/";
 Vue.prototype.$getItem = function (item, parse = true) {
-  let data = localStorage.getItem(item);
-  if (parse) {
+  let data = localStorage.getItem(item) || sessionStorage.getItem(item);
+  if (parse && data) {
     data = JSON.parse(data);
   }
   return data;
 };
-Vue.prototype.$setItem = function (name, item, stringify = true) {
-  localStorage.setItem(name, stringify ? JSON.stringify(item) : item);
+Vue.prototype.$removeItem = function (item) {
+  localStorage.removeItem(item);
+  sessionStorage.removeItem(item);
+  return true;
+};
+Vue.prototype.$setItem = function (
+  name,
+  item,
+  stringify = true,
+  remember = true
+) {
+  if (remember) {
+    localStorage.setItem(name, stringify ? JSON.stringify(item) : item);
+  } else {
+    sessionStorage.setItem(name, stringify ? JSON.stringify(item) : item);
+  }
 };
 Vue.prototype.$randomColor = function () {
   var letters = "01233456789ABCDEF";

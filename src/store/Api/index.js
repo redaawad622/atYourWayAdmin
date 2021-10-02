@@ -9,4 +9,5 @@ export default {
   productAttribute: "api/productAttribute",
   order: "api/order",
   productOption: "api/productOption",
+  reset: "api/reset",
 };

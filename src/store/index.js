@@ -7,6 +7,7 @@ import Offer from "./modules/Offer";
 import Attribute from "./modules/Attribute";
 import Product from "./modules/Product";
 import Order from "./modules/Order";
+import Setting from "./modules/Setting";
 
 Vue.use(Vuex);
 
@@ -14,5 +15,5 @@ export default new Vuex.Store({
   state: {},
   mutations: {},
   actions: {},
-  modules: { Auth, DataTable, Category, Offer, Attribute, Product, Order },
+  modules: { Auth, DataTable, Category, Offer, Attribute, Product, Order,Setting },
 });

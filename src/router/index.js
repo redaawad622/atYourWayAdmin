@@ -10,6 +10,7 @@ import Product from "../views/Products"
 import AddProduct from "../views/Products/AddProduct.vue"
 import EditProduct from "../views/Products/EditProduct.vue"
 import orderDetails from "../views/Orders/orderDetails.vue"
+import Setting from "../views/Setting"
 
 
 
@@ -66,6 +67,11 @@ const routes = [
     path: "/attributes/:id",
     name: "AttributesValue",
     component: AttributesValue,
+  },
+  {
+    path: "/setting",
+    name: "Setting",
+    component: Setting,
   },
   
 ];

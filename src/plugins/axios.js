@@ -16,9 +16,11 @@ let config = {
   // timeout: 60 * 1000, // Timeout
   withCredentials: true, // Check cross-site Access-Control
 };
-
+const $user= Vue.prototype.$getItem("hajaUser");
 const _axios = axios.create(config);
-
+if($user){
+  _axios.defaults.headers.common['Authorization'] = 'Bearer '+$user.token.token;
+}
 _axios.interceptors.request.use(
   function (config) {
     // Do something before request is sent

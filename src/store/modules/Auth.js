@@ -22,9 +22,7 @@ const actions = {
         .post(Api.login, payload)
         .then((res) => {
           commit("updateUser", res.data);
-          if (payload.remember) {
-            Vue.prototype.$setItem("hajaUser", res.data);
-          }
+          Vue.prototype.$setItem("hajaUser", res.data,true, payload.remember);
           resolve(res);
         })
         .catch((rej) => {
@@ -32,11 +30,11 @@ const actions = {
         });
     });
   },
-  logout({ commit }, payload) {
-    window.localStorage.removeItem("hajaUser");
+  logout({ commit, state }) {
+    Vue.prototype.$removeItem("hajaUser");
     return new Promise((resolve, reject) => {
       Vue.axios
-        .post(Api.logout, payload)
+        .post(Api.logout, { tokenId: state.user.token.id })
         .then((res) => {
           commit("updateUser", null);
           resolve(res);

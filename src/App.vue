@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <v-navigation-drawer
+    v-if="user"
       :mobile-breakpoint="960"
       :mini-variant="$vuetify.breakpoint.smAndDown ? false : miniVariant"
       dark
@@ -13,8 +14,9 @@
         height="70px"
         color="#2a3042"
       >
-        <v-img :src="logo" v-if="!miniVariant" max-width="80px"></v-img>
-        <v-img :src="logoLight" v-else max-width="24px"></v-img>
+      <v-img :src="logoLight" class="mx-2"  max-width="24px"></v-img>
+        <span v-if="!miniVariant" class="font-weight-bold">ATYOURWAY</span>
+        
       </v-sheet>
       <v-list flat>
         <v-list-item
@@ -35,7 +37,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <app-bar @toggle="toggleMenu"></app-bar>
+    <app-bar v-if="user" @toggle="toggleMenu"></app-bar>
     <v-main style="background-color: #f8f8fb">
       <router-view v-if="user" />
       <login v-else></login>
@@ -68,6 +70,7 @@ export default {
       { title: "orders", to: "/orders", icon: "mdi-cart-arrow-down" },
       { title: "offers", to: "/offers", icon: "mdi-offer" },
       { title: "attributes", to: "/attributes", icon: "mdi-sort-ascending" },
+      { title: "setting", to: "/setting", icon: "mdi-cog" },
     ],
   }),
   computed: {
