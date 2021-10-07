@@ -14,11 +14,11 @@
         ></v-text-field>
         <v-autocomplete
           :items="categories"
-          v-model="form.parent_id"
+          v-model="form.parent"
           item-text="name"
-          item-value="id"
+          item-value="name"
           clearable
-          :error-messages="serverErr['parent_id']"
+          :error-messages="serverErr['parent']"
           outlined
           label="parent category"
         ></v-autocomplete>
@@ -52,7 +52,7 @@ export default {
       name: "",
       description: "",
       featured: false,
-      parent_id: null,
+      parent: null,
       menu: false,
     },
     serverErr: [],
@@ -79,7 +79,7 @@ export default {
             name: "",
             description: "",
             featured: false,
-            parent_id: 1,
+            parent: null,
             menu: 1,
           };
           this.toggle(false);
