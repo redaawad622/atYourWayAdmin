@@ -154,10 +154,23 @@ const actions = {
         });
     });
   },
+
   editProductOption(_, payload) {
     return new Promise((resolve, reject) => {
       Vue.axios
         .put(Api.productOption + "/" + payload.id, payload.form)
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((rej) => {
+          reject(rej);
+        });
+    });
+  },
+  saveDiscount({ state }, payload) {
+    return new Promise((resolve, reject) => {
+      Vue.axios
+        .post(Api.product + "/" + state.product.id + "/discount", payload)
         .then((res) => {
           resolve(res);
         })
@@ -193,7 +206,7 @@ const mutations = {
   deleteProductOption(state, payload) {
     state.productOptions.splice(payload, 1);
   },
- 
+
   editProductAttribute(state, payload) {
     let index = state.productAttribute.findIndex(
       (item) => item.id === payload.id

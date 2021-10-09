@@ -4,24 +4,24 @@
 import Vue from "vue";
 import Api from "../Api";
 const state = {
-  categories:[]
+  categories: [],
 };
 
 // getters
 const getters = {
-  categories:(state)=>{
+  categories: (state) => {
     return state.categories;
-  }
+  },
 };
 
 // actions
 const actions = {
-  getCats({commit}) {
+  getCats({ commit }) {
     return new Promise((resolve, reject) => {
       Vue.axios
-        .get(Api.category+"?all=1")
+        .get(Api.category + "?all=1")
         .then((res) => {
-          commit('setCats',res.data.data);
+          commit("setCats", res.data.data);
           resolve(res);
         })
         .catch((rej) => {
@@ -32,7 +32,11 @@ const actions = {
   add(_, payload) {
     return new Promise((resolve, reject) => {
       Vue.axios
-        .post(Api.category, payload)
+        .post(Api.category, payload, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((res) => {
           resolve(res);
         })
@@ -44,7 +48,11 @@ const actions = {
   edit(_, payload) {
     return new Promise((resolve, reject) => {
       Vue.axios
-        .put(Api.category + "/" + payload.id, payload.form)
+        .post(Api.category + "/" + payload.id, payload.form, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((res) => {
           resolve(res);
         })
@@ -57,9 +65,8 @@ const actions = {
 
 // mutations
 const mutations = {
-
   setCats(state, payload) {
-    state.categories=payload
+    state.categories = payload;
   },
 };
 

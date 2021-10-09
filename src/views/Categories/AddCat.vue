@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-sheet v-model="sheet" :inset="!this.$vuetify.breakpoint.smAndDown">
+  <v-bottom-sheet v-model="sheet" :inset="!this.$vuetify.breakpoint.smAndDown" scrollable>
     <template v-slot:activator="{ on, attrs }">
       <v-btn v-bind="attrs" v-on="on" rounded color="success" elevation="0"
         ><v-icon left>mdi-plus</v-icon> Add A New Category</v-btn
@@ -30,6 +30,32 @@
           :error-messages="serverErr['description']"
         ></v-textarea>
         <v-switch label="is featured ?" v-model="form.featured"></v-switch>
+        <template v-if="form.featured">
+           <div class="text-center mb-2">
+            <img
+              id="imgPreview3"
+              height="180px"
+              :src="$getUrl(form.url, 'imgPreview3')"
+              alt="paste image url or choose image"
+            />
+          </div>
+          <v-text-field
+            outlined
+            v-model="form.url"
+            :error-messages="serverErr['url']"
+            label="feature category image url"
+            prepend-inner-icon="mdi-link"
+          ></v-text-field>
+          <v-file-input
+            outlined
+            accept="image/png, image/jpeg, image/bmp"
+            placeholder="Pick an image"
+            prepend-inner-icon="mdi-camera"
+            prepend-icon=""
+            v-model="form.url"
+            label="Pick an image"
+          ></v-file-input>
+        </template>
         <v-switch label="main menu ?" v-model="form.menu"></v-switch>
         <v-btn
           class="mt-3"
@@ -54,6 +80,7 @@ export default {
       featured: false,
       parent_id: null,
       menu: false,
+      url:''
     },
     serverErr: [],
     loading: false,
@@ -74,7 +101,7 @@ export default {
       this.serverErr = [];
       this.loading = true;
       this.$store
-        .dispatch("Category/add", this.form)
+        .dispatch("Category/add", this.$objectToFormData(this.form))
         .then((res) => {
           this.$store.commit("DataTable/add", res.data);
           this.form = {
@@ -82,6 +109,7 @@ export default {
             description: "",
             featured: false,
             parent_id: null,
+            url:'',
             menu: 1,
           };
         })

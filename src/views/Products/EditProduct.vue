@@ -20,7 +20,7 @@
             :rules="reqRules"
           ></v-text-field>
           <v-row>
-            <v-col sm="12" md="6">
+            <v-col cols="12" md="6">
               <v-text-field
                 outlined
                 v-model="form.sku"
@@ -29,14 +29,14 @@
                 :rules="reqRules"
               ></v-text-field>
             </v-col>
-            <v-col sm="12" md="6">
+            <v-col cols="12" md="6">
               <v-text-field
                 outlined
                 type="number"
                 v-model="form.quantity"
                 :error-messages="serverErr['quantity']"
                 label="product quantity"
-                :rules="reqRules"
+                :rules="[...reqRules, ...isNumber]"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -56,27 +56,35 @@
           ></v-autocomplete>
 
           <v-row>
-            <v-col sm="12" md="6">
+            <v-col cols="12" md="6">
               <v-text-field
                 outlined
                 v-model="form.price"
                 :error-messages="serverErr['price']"
                 label="product price"
                 type="number"
-                :rules="reqRules"
+                :rules="[...reqRules, ...isNumber]"
               ></v-text-field>
             </v-col>
-            <v-col sm="12" md="6">
+            <v-col cols="12" md="6">
               <v-text-field
                 outlined
                 v-model="form.sale_price"
                 :error-messages="serverErr['sale_price']"
                 type="number"
                 label="product sale price"
-                :rules="reqRules"
+                :rules="[...reqRules, ...isNumber]"
               ></v-text-field>
             </v-col>
           </v-row>
+          <v-text-field
+            outlined
+            type="number"
+            :rules="isNumber"
+            label="permenent discount"
+            v-model.number="form.permanentDiscount"
+            :error-messages="serverErr['permanentDiscount']"
+          ></v-text-field>
           <v-textarea
             rows="3"
             v-model="form.description"
@@ -164,12 +172,131 @@
       <v-card-title>Product Options</v-card-title>
       <product-option></product-option>
     </v-card>
+    <v-card class="defaultCard mt-2" elevation="0">
+      <v-card-title>Product Offer Discount</v-card-title>
+      <v-card-text>
+        <v-form v-model="discountValid">
+          <v-row>
+            <v-col cols="12" sm="6" md="4">
+              <v-text-field
+                label="discount"
+                suffix="%"
+                outlined
+                dense
+                :rules="isNumber"
+                type="number"
+                v-model.number="form.discount"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6" md="4">
+              <v-menu
+                ref="menu"
+                v-model="menu"
+                :close-on-content-click="false"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="form.startDate"
+                    label="start date"
+                    append-icon="mdi-calendar"
+                    readonly
+                    outlined
+                    :rules="reqRules"
+                    dense
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                  v-model="form.startDate"
+                  :active-picker.sync="activePicker"
+                  :min="
+                    new Date(
+                      Date.now() - new Date().getTimezoneOffset() * 60000
+                    )
+                      .toISOString()
+                      .substr(0, 10)
+                  "
+                  @change="save"
+                ></v-date-picker>
+              </v-menu>
+            </v-col>
+            <v-col cols="12" sm="6" md="4">
+              <v-menu
+                ref="menuTime"
+                v-model="menu2"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                :return-value.sync="form.startTime"
+                transition="scale-transition"
+                offset-y
+                max-width="290px"
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="form.startTime"
+                    label="start time"
+                    outlined
+                    dense
+                    :rules="reqRules"
+                    append-icon="mdi-clock-time-four-outline"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-time-picker
+                  v-if="menu2"
+                  v-model="form.startTime"
+                  full-width
+                  @click:minute="$refs.menuTime.save(form.startTime)"
+                ></v-time-picker>
+              </v-menu>
+            </v-col>
+            <v-col cols="12" sm="6" md="4">
+              <v-text-field
+                label="duration in minutes"
+                suffix="minutes"
+                outlined
+                dense
+                :rules="isNumber"
+                type="number"
+                v-model.number="form.duration"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6" md="4">
+              <v-checkbox
+                label="add to discount slider ?"
+                v-model="form.discountSlider"
+                color="primary"
+                hide-details
+                class="mt-0"
+              ></v-checkbox>
+            </v-col>
+            <v-col cols="12" sm="6" md="4">
+              <v-btn
+                color="primary"
+                :loading="discountLoading"
+                :text="discountLoading"
+                block
+                @click="saveDiscount()"
+                >save</v-btn
+              >
+            </v-col>
+          </v-row>
+        </v-form>
+      </v-card-text>
+    </v-card>
   </v-container>
 </template>
 
 <script>
 import productAtrributes from "../../components/product/productAtrributes.vue";
-import ProductOption from '../../components/product/productOption.vue';
+import ProductOption from "../../components/product/productOption.vue";
 import Api from "../../store/Api";
 export default {
   components: { productAtrributes, ProductOption },
@@ -186,9 +313,14 @@ export default {
   },
   data: () => ({
     model: 0,
+    discountValid: true,
     valid: true,
     loading: false,
+    discountLoading: false,
     carouselImage: 1,
+    menu: false,
+    menu2: false,
+    activePicker: null,
     form: {
       title: "",
       sku: "",
@@ -202,11 +334,49 @@ export default {
       featured: false,
       availablity: true,
       images: [],
+      discount: 0,
+      permanentDiscount: 0,
+      startDate: new Date().toString(),
+      duration: 1,
+      startTime: null,
+      discountSlider: false,
     },
     serverErr: [],
     reqRules: [(v) => !!v || "input is required"],
+    isNumber: [
+      (v) =>
+        /^\s*(?=.*[0-9])\d*(?:\.\d{1,2})?\s*$/.test(v) ||
+        "number must be equal or greater than 0",
+    ],
   }),
+  watch: {
+    menu(val) {
+      val && setTimeout(() => (this.activePicker = "YEAR"));
+    },
+  },
+
   methods: {
+    save(date) {
+      this.$refs.menu.save(date);
+    },
+    saveDiscount() {
+      if (this.discountValid) {
+        this.discountLoading = true;
+        const { discount, duration, startDate, startTime, discountSlider } =
+          this.form;
+        this.$store
+          .dispatch("Product/saveDiscount", {
+            discount,
+            startDate,
+            duration,
+            startTime,
+            discountSlider,
+          })
+          .finally(() => {
+            this.discountLoading = false;
+          });
+      }
+    },
     removeImage() {
       this.$store
         .dispatch(
@@ -265,6 +435,26 @@ export default {
         .dispatch("Product/getProduct", this.$route.params.id)
         .then(() => {
           this.form = this.product;
+          this.form.discount = this.form.discount || 1;
+          this.form.duration = this.form.duration || 1;
+          if (this.form.startDate) {
+            const date = new Date(
+              new Date(this.form.startDate + " UTC").toString()
+            );
+            // Coverting to local datetime
+            this.form.startDate =
+              date.getFullYear() +
+              "-" +
+              (date.getMonth() + 1) +
+              "-" +
+              date.getDate();
+            this.form.startTime =
+              date.getHours() +
+              ":" +
+              date.getMinutes() +
+              ":" +
+              date.getSeconds();
+          }
         });
     },
   },

@@ -14,7 +14,7 @@
             :rules="reqRules"
           ></v-text-field>
           <v-row>
-            <v-col sm="12" md="6">
+            <v-col cols="12" md="6">
               <v-text-field
                 outlined
                 v-model="form.sku"
@@ -23,13 +23,13 @@
                 :rules="reqRules"
               ></v-text-field>
             </v-col>
-            <v-col sm="12" md="6">
+            <v-col cols="12" md="6">
               <v-text-field
                 outlined
                 v-model="form.quantity"
                 :error-messages="serverErr['quantity']"
                 label="product quantity"
-                :rules="reqRules"
+                :rules="[...reqRules, ...isNumber]"
                 type="number"
               ></v-text-field>
             </v-col>
@@ -50,27 +50,35 @@
           ></v-autocomplete>
 
           <v-row>
-            <v-col sm="12" md="6">
+            <v-col cols="12" md="6">
               <v-text-field
                 outlined
                 v-model="form.price"
                 label="product price"
                 :error-messages="serverErr['price']"
                 type="number"
-                :rules="reqRules"
+                :rules="[...reqRules, ...isNumber]"
               ></v-text-field>
             </v-col>
-            <v-col sm="12" md="6">
+            <v-col cols="12" md="6">
               <v-text-field
                 outlined
                 v-model="form.sale_price"
                 type="number"
                 :error-messages="serverErr['sale_price']"
                 label="product sale price"
-                :rules="reqRules"
+                :rules="[...reqRules, ...isNumber]"
               ></v-text-field>
             </v-col>
           </v-row>
+          <v-text-field
+            outlined
+            type="number"
+            :rules="isNumber"
+            label="permenent discount"
+            v-model.number="form.permanentDiscount"
+            :error-messages="serverErr['permanentDiscount']"
+          ></v-text-field>
           <v-textarea
             rows="3"
             v-model="form.description"
@@ -123,11 +131,17 @@ export default {
       sale_price: "",
       categories: [],
       description: "",
+      permanentDiscount: 0,
       featured: false,
       availablity: true,
     },
     serverErr: [],
     reqRules: [(v) => !!v || "input is required"],
+    isNumber: [
+      (v) =>
+        /^\s*(?=.*[0-9])\d*(?:\.\d{1,2})?\s*$/.test(v) ||
+        "number must be equal or greater than 0",
+    ],
   }),
   methods: {
     getCat() {
