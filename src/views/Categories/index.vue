@@ -41,6 +41,7 @@ export default {
         { name: "description", dataProp: "description", type: "text" },
         { name: "parent", dataProp: "parent", type: "text" },
         { name: "featured", dataProp: "featured", type: "bool",textY:'Yes',textN:'No' },
+        { name: "main menu", dataProp: "menu", type: "bool",textY:'Yes',textN:'No' },
         { name: "create date", dataProp: "created_at", type: "date" },
       ],
       options: [
