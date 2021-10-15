@@ -4,18 +4,11 @@
       color="icon"
       @click="$emit('toggle')"
     ></v-app-bar-nav-icon>
-    <v-autocomplete
-      rounded
-      prepend-inner-icon="mdi-magnify"
-      placeholder="Search..."
-      filled
-      hide-details
-      dense
-    ></v-autocomplete>
-    <v-spacer></v-spacer>
+    <search v-if="$vuetify.breakpoint.smAndUp"></search>
+    <v-spacer v-if="$vuetify.breakpoint.smAndUp"></v-spacer>
     <v-menu offset-y>
       <template v-slot:activator="{ on, attrs }">
-        <v-btn icon v-bind="attrs" v-on="on" color="primary"
+        <v-btn class="mx-2" icon v-bind="attrs" v-on="on" color="primary"
           ><v-icon>mdi-circle</v-icon>
         </v-btn>
       </template>
@@ -32,8 +25,13 @@
     </v-btn>
     <v-menu offset-y>
       <template v-slot:activator="{ on, attrs }">
-        <v-list-item :class="{ 'px-0': $vuetify.breakpoint.xs }" style="flex: unset" v-bind="attrs" v-on="on">
-          <v-list-item-avatar >
+        <v-list-item
+          :class="{ 'px-0': $vuetify.breakpoint.xs }"
+          style="flex: unset"
+          v-bind="attrs"
+          v-on="on"
+        >
+          <v-list-item-avatar>
             <v-img :src="avater"></v-img>
           </v-list-item-avatar>
           <v-list-item-title v-if="!$vuetify.breakpoint.xs">{{
@@ -43,7 +41,27 @@
       </template>
       <v-list dense>
         <v-list-item @click="logout">
-          <v-list-item-title>Logout</v-list-item-title>
+          <v-list-item-title class="text-capitalize">{{
+            $vuetify.lang.t(`$vuetify.logout`)
+          }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+    <v-menu offset-y>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn text v-bind="attrs" v-on="on" color="primary"
+          >{{ $vuetify.lang.t(`$vuetify.${$vuetify.lang.current}`) }}
+        </v-btn>
+      </template>
+      <v-list dense>
+        <v-list-item
+          v-for="(lang, index) in $vuetify.lang.locales"
+          @click="setLang(index)"
+          :key="'lang' + index"
+        >
+          <v-list-item-title>{{
+            $vuetify.lang.t(`$vuetify.${index}`)
+          }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
@@ -52,7 +70,9 @@
 
 <script>
 import avater from "../../assets/avater.png";
+import search from "./search.vue";
 export default {
+  components: { search },
   data() {
     return {
       picker: "",
@@ -71,6 +91,15 @@ export default {
       : this.$vuetify.theme.themes.light.primary;
   },
   methods: {
+    setLang(index) {
+      if (index == "ar") {
+        this.$vuetify.rtl = true;
+      } else {
+        this.$vuetify.rtl = false;
+      }
+      this.$vuetify.lang.current = index;
+      localStorage.setItem("at-lang", index);
+    },
     logout() {
       this.$store.dispatch("Auth/logout");
     },
@@ -113,4 +142,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.v-toolbar__content {
+  justify-content: space-between;
+}
+</style>

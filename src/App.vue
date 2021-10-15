@@ -1,22 +1,23 @@
 <template>
   <v-app>
     <v-navigation-drawer
-    v-if="user"
+      v-if="user"
       :mobile-breakpoint="960"
       :mini-variant="$vuetify.breakpoint.smAndDown ? false : miniVariant"
       dark
       app
       v-model="temp"
       color="#2a3042"
+      :right="$vuetify.rtl"
     >
       <v-sheet
         class="d-flex justify-center align-center"
+        :class="{ 'flex-revert': $vuetify.rtl }"
         height="70px"
         color="#2a3042"
       >
-      <v-img :src="logoLight" class="mx-2"  max-width="24px"></v-img>
+        <v-img :src="logoLight" class="mx-2" max-width="24px"></v-img>
         <span v-if="!miniVariant" class="font-weight-bold">ATYOURWAY</span>
-        
       </v-sheet>
       <v-list flat>
         <v-list-item
@@ -30,8 +31,10 @@
             <v-icon color="#6a7187">{{ item.icon }}</v-icon>
           </v-list-item-icon>
 
-          <v-list-item-content  >
-            <v-list-item-title style="color:#6a7187"   >{{ item.title }}</v-list-item-title>
+          <v-list-item-content>
+            <v-list-item-title class="text-capitalize" style="color: #6a7187">{{
+              $vuetify.lang.t(`$vuetify.${item.title}`)
+            }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -39,6 +42,10 @@
 
     <app-bar v-if="user" @toggle="toggleMenu"></app-bar>
     <v-main style="background-color: #f8f8fb">
+      <div class="px-4 my-4">
+        <search v-if="$vuetify.breakpoint.xs"></search>
+      </div>
+
       <router-view v-if="user" />
       <login v-else></login>
     </v-main>
@@ -50,9 +57,11 @@ import Login from "./views/auth/Login.vue";
 import logo from "./assets/logo.png";
 import logoLight from "./assets/logo-light.svg";
 import AppBar from "./components/common/AppBar.vue";
+import Search from "./components/common/search.vue";
 export default {
-  components: { Login, AppBar },
-  name: "App",
+  components: { Login, AppBar, Search },
+  name,
+  Search: "App",
 
   data: () => ({
     miniVariant: false,
@@ -60,9 +69,9 @@ export default {
     logoLight: logoLight,
     temp: true,
     items: [
-      { title: "Dashboard", to: "/", icon: "mdi-view-dashboard-outline" },
+      { title: "dashboard", to: "/", icon: "mdi-view-dashboard-outline" },
       {
-        title: "Categories",
+        title: "categories",
         to: "/categories",
         icon: "mdi-format-list-bulleted-type ",
       },
@@ -87,6 +96,15 @@ export default {
       }
     },
   },
+  created() {
+    const lang = localStorage.getItem("at-lang");
+    this.$vuetify.lang.current = lang || "en";
+    if (lang == "ar") {
+      this.$vuetify.rtl = true;
+    } else {
+      this.$vuetify.rtl = false;
+    }
+  },
 };
 </script>
 <style>
@@ -99,8 +117,8 @@ export default {
 .w-100 {
   width: 100%;
 }
-.mainListActive.v-list-item--active .v-icon,.mainListActive.v-list-item--active .v-list-item__title {
+.mainListActive.v-list-item--active .v-icon,
+.mainListActive.v-list-item--active .v-list-item__title {
   color: #fff !important;
 }
-
 </style>

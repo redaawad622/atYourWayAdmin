@@ -1,14 +1,15 @@
 <template>
   <v-container fluid>
-    <v-card-title>Products</v-card-title>
-
+    <v-card-title class="text-capitalize">{{
+      $vuetify.lang.t(`$vuetify.products`)
+    }}</v-card-title>
     <v-card class="defaultCard" elevation="0">
       <v-card-text>
         <div class="d-flex justify-space-between">
           <v-spacer></v-spacer>
-           <v-btn to="/product/add" rounded color="success" elevation="0"
-        ><v-icon left>mdi-plus</v-icon> Add A New Product</v-btn
-      >
+          <v-btn to="/product/add" rounded color="success" elevation="0"
+            ><v-icon left>mdi-plus</v-icon> Add A New Product</v-btn
+          >
         </div>
         <data-table
           :link="link"
@@ -36,20 +37,25 @@ export default {
       open: false,
       editItem: null,
       columns: [
-        { name: "Sku", dataProp: "sku", type: "text" },
-        { name: "Title", dataProp: "title", type: "text" },
-       // { name: "Description", dataProp: "description", type: "text" },
-        { name: "Price", dataProp: "price", type: "text" },
-        { name: "Categories", dataProp: "categories", type: "arrayOfObject",objProp:'name' },
+        { name: "sku", dataProp: "sku", type: "text" },
+        { name: "title", dataProp: "title", type: "text" },
+        // { name: "Description", dataProp: "description", type: "text" },
+        { name: "price", dataProp: "price", type: "text" },
         {
-          name: "Availablity",
+          name: "categories",
+          dataProp: "categories",
+          type: "arrayOfObject",
+          objProp: "name",
+        },
+        {
+          name: "availablity",
           dataProp: "availablity",
           type: "bool",
           textY: "Yes",
           textN: "No",
         },
 
-        { name: "Create Date", dataProp: "created_at", type: "date" },
+        { name: "create date", dataProp: "created_at", type: "date" },
       ],
       options: [
         {
@@ -57,7 +63,7 @@ export default {
           icon: "mdi-pencil-box-outline",
           type: "edit",
           color: "success",
-          link:true
+          link: true,
         },
         {
           title: "remove Product",

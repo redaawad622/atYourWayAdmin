@@ -1,6 +1,9 @@
 <template>
   <v-container fluid>
-    <v-card-title>Offers</v-card-title>
+
+     <v-card-title class="text-capitalize">{{
+      $vuetify.lang.t(`$vuetify.offers`)
+    }}</v-card-title>
     <v-card class="defaultCard" elevation="0">
       <v-card-text>
         <div class="d-flex justify-space-between">

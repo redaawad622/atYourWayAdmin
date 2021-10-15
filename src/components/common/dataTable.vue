@@ -5,10 +5,9 @@
         <thead>
           <tr>
             <th
-              class="text-left"
               v-for="(column, index) in columns"
               :key="index + 'column'"
-              v-text="column.name"
+              v-text="$vuetify.lang.t(`$vuetify.${column.name}`)"
             ></th>
             <th v-if="option">
               <v-btn fab icon color="primary" :loading="actionLoading" dark>

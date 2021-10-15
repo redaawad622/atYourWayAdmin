@@ -1,12 +1,19 @@
 <template>
   <v-container fluid>
-    <v-card-title>Settings</v-card-title>
-
+    <v-card-title class="text-capitalize">{{
+      $vuetify.lang.t(`$vuetify.settings`)
+    }}</v-card-title>
     <v-card class="defaultCard" elevation="0">
       <v-card-title>reset</v-card-title>
 
       <v-card-text>
-        <v-btn @click="openConfirm()"  :text='loading' color="red" :loading='loading'>Reset all data</v-btn>
+        <v-btn
+          @click="openConfirm()"
+          :text="loading"
+          color="red"
+          :loading="loading"
+          >Reset all data</v-btn
+        >
       </v-card-text>
     </v-card>
   </v-container>

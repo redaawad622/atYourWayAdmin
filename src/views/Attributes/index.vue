@@ -1,6 +1,8 @@
 <template>
   <v-container fluid>
-    <v-card-title>Attributes</v-card-title>
+    <v-card-title class="text-capitalize">{{
+      $vuetify.lang.t(`$vuetify.attributes`)
+    }}</v-card-title>
     <v-card class="defaultCard" elevation="0">
       <v-card-text>
         <div class="d-flex justify-space-between">
@@ -36,31 +38,31 @@ export default {
       open: false,
       editItem: null,
       columns: [
-        { name: "Code", dataProp: "code", type: "text" },
-        { name: "Name", dataProp: "name", type: "text" },
-        { name: "Design", dataProp: "frontend_type", type: "text" },
+        { name: "code", dataProp: "code", type: "text" },
+        { name: "name", dataProp: "name", type: "text" },
+        { name: "design", dataProp: "frontend_type", type: "text" },
         {
-          name: "Filterable",
+          name: "filterable",
           dataProp: "is_filterable",
           type: "bool",
           textY: "Yes",
           textN: "No",
         },
         {
-          name: "Required",
+          name: "required",
           dataProp: "is_required",
           type: "bool",
           textY: "Yes",
           textN: "No",
         },
-        { name: "Create Date", dataProp: "created_at", type: "date" },
+        { name: "create date", dataProp: "created_at", type: "date" },
       ],
       options: [
         {
           title: "view attribute",
           icon: "mdi-eye",
           type: "show",
-          link:true,
+          link: true,
           color: "info",
         },
 

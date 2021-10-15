@@ -1,6 +1,9 @@
 <template>
   <v-container fluid>
-    <v-card-title>Orders</v-card-title>
+   
+     <v-card-title class="text-capitalize">{{
+      $vuetify.lang.t(`$vuetify.orders`)
+    }}</v-card-title>
     <v-card class="defaultCard" elevation="0">
       <v-card-text>
         <div class="d-flex justify-space-between">
@@ -39,7 +42,7 @@ export default {
         { name: "order number", dataProp: "uuid", type: "test" },
         { name: "customer name", dataProp: "user", objProp:"name", type: "object" },
         { name: "customer address", dataProp: "user", objProp:"address", type: "object" },
-        { name: "Note", dataProp: "note", type: "text" },
+        { name: "note", dataProp: "note", type: "text" },
         { name: "create date", dataProp: "created_at", type: "date" },
       ],
       options: [
