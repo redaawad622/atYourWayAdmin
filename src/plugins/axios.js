@@ -18,7 +18,7 @@ let config = {
 };
 const $user = Vue.prototype.$getItem("hajaUser");
 const _axios = axios.create(config);
-if ($user) {
+if ($user && $user.token) {
   _axios.defaults.headers.common["Authorization"] =
     "Bearer " + $user.token.token;
 }
@@ -29,6 +29,7 @@ _axios.interceptors.request.use(
       config.params = {};
     }
     config.params["zone"] = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    config.params["lang"] = localStorage.getItem("at-lang") || "en";
     return config;
   },
   function (error) {

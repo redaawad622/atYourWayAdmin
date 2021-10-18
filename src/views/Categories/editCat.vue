@@ -5,11 +5,11 @@
     :inset="!this.$vuetify.breakpoint.smAndDown"
     scrollable
   >
-    <v-sheet class="text-center" min-height="120px" style="overflow: auto;">
+    <v-sheet class="text-center" min-height="120px" style="overflow: auto">
       <v-card-text>
         <v-text-field
           outlined
-          label="category name"
+          :label="$vuetify.lang.t(`$vuetify.category name`)"
           v-model="form.name"
           :error-messages="serverErr['name']"
         ></v-text-field>
@@ -21,49 +21,55 @@
           clearable
           :error-messages="serverErr['parent']"
           outlined
-          label="parent category"
+          :label="$vuetify.lang.t(`$vuetify.parent category`)"
         ></v-autocomplete>
         <v-textarea
           outlined
-          label="category description"
+          :label="$vuetify.lang.t(`$vuetify.category description`)"
           v-model="form.description"
           :error-messages="serverErr['description']"
         ></v-textarea>
-        <v-switch label="is featured ?" v-model="form.featured"></v-switch>
+        <v-switch
+          :label="$vuetify.lang.t(`$vuetify.is featured ?`)"
+          v-model="form.featured"
+        ></v-switch>
         <template v-if="form.featured">
           <div class="text-center mb-2">
             <img
               id="imgPreview3"
               height="180px"
               :src="$getUrl(form.image, 'imgPreview3')"
-              alt="paste image url or choose image"
+              :alt="$vuetify.lang.t(`$vuetify.paste image url or choose image`)"
             />
           </div>
           <v-text-field
             outlined
             v-model="form.image"
             :error-messages="serverErr['image']"
-            label="feature category image url"
+            :label="$vuetify.lang.t(`$vuetify.feature category image url`)"
             prepend-inner-icon="mdi-link"
           ></v-text-field>
           <v-file-input
             outlined
             accept="image/png, image/jpeg, image/bmp"
-            placeholder="Pick an image"
             prepend-inner-icon="mdi-camera"
             prepend-icon=""
             v-model="form.image"
-            label="Pick an image"
+            :label="$vuetify.lang.t(`$vuetify.Pick an image`)"
+            :placeholder="$vuetify.lang.t(`$vuetify.Pick an image`)"
           ></v-file-input>
         </template>
-        <v-switch label="main menu ?" v-model="form.menu"></v-switch>
+        <v-switch
+          :label="$vuetify.lang.t(`$vuetify.main menu ?`)"
+          v-model="form.menu"
+        ></v-switch>
         <v-btn
           class="mt-3"
           color="primary"
           min-width="100px"
           :loading="loading"
           @click="Edit()"
-          >Edit</v-btn
+          >{{ $vuetify.lang.t(`$vuetify.edit`) }}</v-btn
         >
       </v-card-text>
     </v-sheet>

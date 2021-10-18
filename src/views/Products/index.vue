@@ -8,7 +8,8 @@
         <div class="d-flex justify-space-between">
           <v-spacer></v-spacer>
           <v-btn to="/product/add" rounded color="success" elevation="0"
-            ><v-icon left>mdi-plus</v-icon> Add A New Product</v-btn
+            ><v-icon left>mdi-plus</v-icon>
+            {{ $vuetify.lang.t(`$vuetify.add a new product`) }}</v-btn
           >
         </div>
         <data-table
@@ -59,14 +60,14 @@ export default {
       ],
       options: [
         {
-          title: "edit Product",
+          title: "edit product",
           icon: "mdi-pencil-box-outline",
           type: "edit",
           color: "success",
           link: true,
         },
         {
-          title: "remove Product",
+          title: "remove product",
           icon: "mdi-trash-can-outline",
           type: "delete",
           color: "error",

@@ -1,15 +1,20 @@
 <template>
-  <v-bottom-sheet v-model="sheet" :inset="!this.$vuetify.breakpoint.smAndDown" scrollable>
+  <v-bottom-sheet
+    v-model="sheet"
+    :inset="!this.$vuetify.breakpoint.smAndDown"
+    scrollable
+  >
     <template v-slot:activator="{ on, attrs }">
       <v-btn v-bind="attrs" v-on="on" rounded color="success" elevation="0"
-        ><v-icon left>mdi-plus</v-icon> Add A New Category</v-btn
-      >
+        ><v-icon left>mdi-plus</v-icon>
+        {{ $vuetify.lang.t(`$vuetify.add a new category`) }}
+      </v-btn>
     </template>
     <v-sheet class="text-center" min-height="120px">
       <v-card-text>
         <v-text-field
           outlined
-          label="category name"
+          :label="$vuetify.lang.t(`$vuetify.category name`)"
           v-model="form.name"
           :error-messages="serverErr['name']"
         ></v-text-field>
@@ -21,49 +26,56 @@
           :error-messages="serverErr['parent_id']"
           clearable
           outlined
-          label="parent category"
+          :label="$vuetify.lang.t(`$vuetify.parent category`)"
         ></v-autocomplete>
         <v-textarea
           outlined
-          label="category description"
+          :label="$vuetify.lang.t(`$vuetify.category description`)"
           v-model="form.description"
           :error-messages="serverErr['description']"
         ></v-textarea>
-        <v-switch label="is featured ?" v-model="form.featured"></v-switch>
+
+        <v-switch
+          :label="$vuetify.lang.t(`$vuetify.is featured ?`)"
+          v-model="form.featured"
+        ></v-switch>
         <template v-if="form.featured">
-           <div class="text-center mb-2">
+          <div class="text-center mb-2">
             <img
               id="imgPreview3"
               height="180px"
               :src="$getUrl(form.url, 'imgPreview3')"
-              alt="paste image url or choose image"
+              :alt="$vuetify.lang.t(`$vuetify.paste image url or choose image`)"
             />
           </div>
           <v-text-field
             outlined
             v-model="form.url"
             :error-messages="serverErr['url']"
-            label="feature category image url"
+            :label="$vuetify.lang.t(`$vuetify.feature category image url`)"
             prepend-inner-icon="mdi-link"
           ></v-text-field>
           <v-file-input
             outlined
             accept="image/png, image/jpeg, image/bmp"
-            placeholder="Pick an image"
             prepend-inner-icon="mdi-camera"
             prepend-icon=""
             v-model="form.url"
-            label="Pick an image"
+            :label="$vuetify.lang.t(`$vuetify.Pick an image`)"
+            :placeholder="$vuetify.lang.t(`$vuetify.Pick an image`)"
           ></v-file-input>
         </template>
-        <v-switch label="main menu ?" v-model="form.menu"></v-switch>
+        <v-switch
+          :label="$vuetify.lang.t(`$vuetify.main menu ?`)"
+          v-model="form.menu"
+        ></v-switch>
         <v-btn
           class="mt-3"
           color="primary"
           min-width="100px"
           :loading="loading"
           @click="Add()"
-          >Add</v-btn
+          >{{ $vuetify.lang.t(`$vuetify.add`) }}</v-btn
         >
       </v-card-text>
     </v-sheet>
@@ -80,7 +92,7 @@ export default {
       featured: false,
       parent_id: null,
       menu: false,
-      url:''
+      url: "",
     },
     serverErr: [],
     loading: false,
@@ -109,7 +121,7 @@ export default {
             description: "",
             featured: false,
             parent_id: null,
-            url:'',
+            url: "",
             menu: 1,
           };
         })

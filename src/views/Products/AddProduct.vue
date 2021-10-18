@@ -1,15 +1,17 @@
 <template>
   <v-container fluid>
-    <v-card-title>Add Product</v-card-title>
+    <v-card-title>{{ $vuetify.lang.t(`$vuetify.add product`) }}</v-card-title>
     <v-card class="defaultCard" elevation="0">
-      <v-card-title>Product Information</v-card-title>
+      <v-card-title>{{
+        $vuetify.lang.t(`$vuetify.product information`)
+      }}</v-card-title>
 
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-text-field
             outlined
             v-model="form.title"
-            label="product title"
+            :label="$vuetify.lang.t(`$vuetify.product title`)"
             :error-messages="serverErr['title']"
             :rules="reqRules"
           ></v-text-field>
@@ -18,7 +20,7 @@
               <v-text-field
                 outlined
                 v-model="form.sku"
-                label="product sku"
+                :label="$vuetify.lang.t(`$vuetify.product sku`)"
                 :error-messages="serverErr['sku']"
                 :rules="reqRules"
               ></v-text-field>
@@ -28,7 +30,7 @@
                 outlined
                 v-model="form.quantity"
                 :error-messages="serverErr['quantity']"
-                label="product quantity"
+                :label="$vuetify.lang.t(`$vuetify.product quantity`)"
                 :rules="[...reqRules, ...isNumber]"
                 type="number"
               ></v-text-field>
@@ -42,7 +44,7 @@
             v-model="form.categories"
             deletable-chips
             :error-messages="serverErr['categories']"
-            label="product categories"
+            :label="$vuetify.lang.t(`$vuetify.product categories`)"
             :rules="reqRules"
             :items="categories"
             item-text="name"
@@ -54,7 +56,7 @@
               <v-text-field
                 outlined
                 v-model="form.price"
-                label="product price"
+                :label="$vuetify.lang.t(`$vuetify.product price`)"
                 :error-messages="serverErr['price']"
                 type="number"
                 :rules="[...reqRules, ...isNumber]"
@@ -66,7 +68,7 @@
                 v-model="form.sale_price"
                 type="number"
                 :error-messages="serverErr['sale_price']"
-                label="product sale price"
+                :label="$vuetify.lang.t(`$vuetify.product sale price`)"
                 :rules="[...reqRules, ...isNumber]"
               ></v-text-field>
             </v-col>
@@ -75,7 +77,7 @@
             outlined
             type="number"
             :rules="isNumber"
-            label="permenent discount"
+            :label="$vuetify.lang.t(`$vuetify.permenent discount`)"
             v-model.number="form.permanentDiscount"
             :error-messages="serverErr['permanentDiscount']"
           ></v-text-field>
@@ -84,14 +86,18 @@
             v-model="form.description"
             :error-messages="serverErr['description']"
             outlined
-            label="product description"
+            :label="$vuetify.lang.t(`$vuetify.product description`)"
           ></v-textarea>
           <v-checkbox
             v-model="form.availablity"
-            label="availablity"
+            :label="$vuetify.lang.t(`$vuetify.availablity`)"
             hide-details
           ></v-checkbox>
-          <v-checkbox v-model="form.featured" label="featured"></v-checkbox>
+
+          <v-checkbox
+            v-model="form.featured"
+            :label="$vuetify.lang.t(`$vuetify.featured`)"
+          ></v-checkbox>
         </v-form>
       </v-card-text>
       <v-divider></v-divider>
@@ -102,7 +108,7 @@
           min-width="150px"
           :loading="loading"
           @click="Add()"
-          >Add</v-btn
+          >{{ $vuetify.lang.t(`$vuetify.add`) }}</v-btn
         >
       </v-card-actions>
     </v-card>
@@ -120,35 +126,41 @@ export default {
       return this.$store.getters["Category/categories"];
     },
   },
-  data: () => ({
-    valid: true,
-    loading: false,
-    form: {
-      title: "",
-      sku: "",
-      quantity: "",
-      price: "",
-      sale_price: "",
-      categories: [],
-      description: "",
-      permanentDiscount: 0,
-      featured: false,
-      availablity: true,
-    },
-    serverErr: [],
-    reqRules: [(v) => !!v || "input is required"],
-    isNumber: [
-      (v) =>
-        /^\s*(?=.*[0-9])\d*(?:\.\d{1,2})?\s*$/.test(v) ||
-        "number must be equal or greater than 0",
-    ],
-  }),
+  data() {
+    return {
+      valid: true,
+      loading: false,
+      form: {
+        title: "",
+        sku: "",
+        quantity: "",
+        price: "",
+        sale_price: "",
+        categories: [],
+        description: "",
+        permanentDiscount: 0,
+        featured: false,
+        availablity: true,
+      },
+      serverErr: [],
+      reqRules: [
+        (v) => !!v || this.$vuetify.lang.t(`$vuetify.input field is required`),
+      ],
+      isNumber: [
+        (v) =>
+          /^\s*(?=.*[0-9])\d*(?:\.\d{1,2})?\s*$/.test(v) ||
+          this.$vuetify.lang.t(
+            `$vuetify.number must be equal or greater than 0`
+          ),
+      ],
+    };
+  },
   methods: {
     getCat() {
       this.$store.dispatch("Category/getCats");
     },
     validate() {
-      this.$refs.form.validate();
+      return this.$refs.form.validate();
     },
     reset() {
       this.$refs.form.reset();

@@ -50,16 +50,20 @@
                 x-small
                 outlined
                 v-else-if="row.type == 'bool'"
-                :color="item[row.dataProp] ? 'success' : 'error'"
+                :color="
+                  item[row.dataProp]
+                    ? $vuetify.lang.t(`$vuetify.success`)
+                    : $vuetify.lang.t(`$vuetify.error`)
+                "
               >
                 {{
                   item[row.dataProp]
                     ? row.textY
-                      ? row.textY
-                      : "active"
+                      ? $vuetify.lang.t(`$vuetify.${row.textY}`)
+                      : $vuetify.lang.t(`$vuetify.active`)
                     : row.textN
-                    ? row.textN
-                    : "deactive"
+                    ? $vuetify.lang.t(`$vuetify.${row.textN}`)
+                    : $vuetify.lang.t(`$vuetify.deactive`)
                 }}
               </v-chip>
 
@@ -104,7 +108,7 @@
                       </v-list-item-icon>
                       <v-list-item-content>
                         <v-list-item-title
-                          v-text="op.title"
+                          v-text="$vuetify.lang.t(`$vuetify.${op.title}`)"
                         ></v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
@@ -191,7 +195,16 @@ export default {
       });
     },
     getDate(date) {
-      return new Date(date).toDateString();
+      const options = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      };
+      return new Date(date).toLocaleDateString(
+        localStorage.getItem("at-lang") || "en",
+        options
+      );
     },
     doOption(op, item, index) {
       switch (op.type) {
