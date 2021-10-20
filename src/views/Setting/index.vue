@@ -12,7 +12,15 @@
           :text="loading"
           color="red"
           :loading="loading"
-          >Reset all data</v-btn
+        >
+          {{ $vuetify.lang.t("$vuetify.reset all data") }}</v-btn
+        >
+        <v-btn
+          @click="openConfirmGenerate()"
+          :text="loading"
+          color="red"
+          :loading="loading"
+          >{{ $vuetify.lang.t("$vuetify.generate fake data") }}</v-btn
         >
       </v-card-text>
     </v-card>
@@ -28,36 +36,86 @@ export default {
   },
   methods: {
     openConfirm() {
-      this.$toasted.show("are you sure you want to reset data ?", {
-        // pass the icon name as string
-        position: "top-center",
-        fullWidth: false,
-        singleton: true,
-        action: [
-          {
-            text: "Cancel",
-            onClick: (e, toastObject) => {
-              toastObject.goAway(0);
+      this.$toasted.show(
+        this.$vuetify.lang.t("$vuetify.are you sure you want to reset data ?"),
+        {
+          // pass the icon name as string
+          position: "top-center",
+          fullWidth: false,
+          singleton: true,
+          action: [
+            {
+              text: this.$vuetify.lang.t("$vuetify.Cancel"),
+              onClick: (e, toastObject) => {
+                toastObject.goAway(0);
+              },
             },
-          },
-          {
-            text: "Yes",
-            onClick: (e, toastObject) => {
-              this.resetData();
-              toastObject.goAway(0);
+            {
+              text: this.$vuetify.lang.t("$vuetify.Yes"),
+              onClick: (e, toastObject) => {
+                this.resetData();
+                toastObject.goAway(0);
+              },
             },
-          },
-        ],
-      });
+          ],
+        }
+      );
+    },
+    openConfirmGenerate() {
+      this.$toasted.show(
+        this.$vuetify.lang.t(
+          "$vuetify.are you sure you want to generate fake data ?"
+        ),
+        {
+          // pass the icon name as string
+          position: "top-center",
+          fullWidth: false,
+          singleton: true,
+          action: [
+            {
+              text: this.$vuetify.lang.t("$vuetify.Cancel"),
+              onClick: (e, toastObject) => {
+                toastObject.goAway(0);
+              },
+            },
+            {
+              text: this.$vuetify.lang.t("$vuetify.Yes"),
+              onClick: (e, toastObject) => {
+                this.generateData();
+                toastObject.goAway(0);
+              },
+            },
+          ],
+        }
+      );
     },
     resetData() {
       this.loading = true;
       this.$store
         .dispatch("Setting/reset")
         .then(() => {
-          this.$toasted.success("reset data successfully", {
-            duration: 2000,
-          });
+          this.$toasted.success(
+            this.$vuetify.lang.t("$vuetify.reset data successfully"),
+            {
+              duration: 2000,
+            }
+          );
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    generateData() {
+      this.loading = true;
+      this.$store
+        .dispatch("Setting/generate")
+        .then(() => {
+          this.$toasted.success(
+            this.$vuetify.lang.t("$vuetify.generate data successfully"),
+            {
+              duration: 2000,
+            }
+          );
         })
         .finally(() => {
           this.loading = false;

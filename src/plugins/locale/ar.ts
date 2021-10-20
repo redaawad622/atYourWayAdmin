@@ -138,4 +138,13 @@ export default {
   "remove product": "حذف المنتج",
   "edit category": "تعديل القسم",
   "remove category": "حذف القسم",
+  "generate fake data": "انشاء بيانات مزيفة",
+  "reset all data": "إعادة تعيين كافة البيانات",
+  "are you sure you want to reset data ?":
+    "هل أنت متأكد أنك تريد إعادة تعيين البيانات؟",
+  Cancel: "إلغاء",
+  "reset data successfully": "تم إعادة تعيين البيانات بنجاح",
+  "are you sure you want to generate fake data ?":
+    "هل أنت متأكد أنك تريد إنشاء بيانات مزيفة؟",
+  "generate data successfully": "تم إنشاء البيانات بنجاح",
 };

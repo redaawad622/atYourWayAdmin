@@ -10,4 +10,5 @@ export default {
   order: "api/order",
   productOption: "api/productOption",
   reset: "api/reset",
+  generate: "api/generate",
 };

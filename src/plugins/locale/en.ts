@@ -117,8 +117,8 @@ export default {
   edit: "edit",
   no: "no",
   yes: "yes",
-  No: "no",
-  Yes: "yes",
+  No: "No",
+  Yes: "Yes",
   "add a new product": "add a new product",
   "add product": "add product",
   "product information": "product information",
@@ -137,5 +137,13 @@ export default {
   "remove product": "remove product",
   "edit category": "edit category",
   "remove category": "remove category",
-  "": "",
+  "generate fake data": "generate fake data",
+  "reset all data": "reset all data",
+  "are you sure you want to reset data ?":
+    "are you sure you want to reset data ?",
+  Cancel: "Cancel",
+  "reset data successfully": "Reset data is successfully",
+  "are you sure you want to generate fake data ?":
+    "are you sure you want to generate fake data ?",
+  "generate data successfully": "generate data is successfully",
 };

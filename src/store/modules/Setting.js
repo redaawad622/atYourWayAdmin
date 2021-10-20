@@ -22,6 +22,18 @@ const actions = {
         });
     });
   },
+  generate() {
+    return new Promise((resolve, reject) => {
+      Vue.axios
+        .post(Api.generate)
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((rej) => {
+          reject(rej);
+        });
+    });
+  },
 };
 
 // mutations
