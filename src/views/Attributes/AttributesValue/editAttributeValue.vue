@@ -46,15 +46,19 @@
 export default {
   name: "editAttributeValue",
   props: ["value", "item"],
-  data: () => ({
-    valid: true,
-    form: {
-      value: "",
-    },
-    serverErr: [],
-    reqRules: [(v) => !!v || "input is required"],
-    loading: false,
-  }),
+  data() {
+    return {
+      valid: true,
+      form: {
+        value: "",
+      },
+      serverErr: [],
+      reqRules: [
+        (v) => !!v || this.$vuetify.lang.t(`$vuetify.input field is required`),
+      ],
+      loading: false,
+    };
+  },
 
   methods: {
     toggle(val) {

@@ -4,7 +4,7 @@
       <v-card
         class="defaultCard"
         elevation="0"
-        :tile='$vuetify.breakpoint.xs'
+        :tile="$vuetify.breakpoint.xs"
         :class="{
           'height-100': $vuetify.breakpoint.xs,
           maxWidth500: !$vuetify.breakpoint.xs,
@@ -76,9 +76,12 @@ export default {
     show1: false,
 
     password: "Password",
+
     rules: {
-      required: (value) => !!value || "Required.",
-      min: (v) => v.length >= 6 || "Min 6 characters",
+      required: (v) =>
+        !!v || this.$vuetify.lang.t(`$vuetify.input field is required`),
+      min: (v) =>
+        v.length >= 6 || this.$vuetify.lang.t(`$vuetify.Min 6 characters`),
     },
   }),
   methods: {

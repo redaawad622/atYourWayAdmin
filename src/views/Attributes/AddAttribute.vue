@@ -70,20 +70,24 @@
 export default {
   name: "addAtrribute",
   props: ["value"],
-  data: () => ({
-    valid: true,
-    loading: false,
-    form: {
-      code: "",
-      name: "",
-      frontend_type: "select",
-      is_filterable: false,
-      is_required: false,
-    },
-    serverErr: [],
-    reqRules: [(v) => !!v || "input is required"],
-    designType: ["select", "radio", "text", "text_area"],
-  }),
+  data() {
+    return {
+      valid: true,
+      loading: false,
+      form: {
+        code: "",
+        name: "",
+        frontend_type: "select",
+        is_filterable: false,
+        is_required: false,
+      },
+      serverErr: [],
+      reqRules: [
+        (v) => !!v || this.$vuetify.lang.t(`$vuetify.input field is required`),
+      ],
+      designType: ["select", "radio", "text", "text_area"],
+    };
+  },
   methods: {
     toggle(val) {
       this.$emit("input", val);

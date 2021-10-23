@@ -66,21 +66,25 @@
 export default {
   name: "editAttribute",
   props: ["value", "item"],
-  data: () => ({
-    valid: true,
-    dataImage: "",
-    form: {
-      code: "",
-      name: "",
-      frontend_type: "select",
-      is_filterable: false,
-      is_required: false,
-    },
-    loading: false,
-    designType: ["select", "radio", "text", "text_area"],
-    serverErr: [],
-    reqRules: [(v) => !!v || "input is required"],
-  }),
+  data() {
+    return {
+      valid: true,
+      dataImage: "",
+      form: {
+        code: "",
+        name: "",
+        frontend_type: "select",
+        is_filterable: false,
+        is_required: false,
+      },
+      loading: false,
+      designType: ["select", "radio", "text", "text_area"],
+      serverErr: [],
+      reqRules: [
+        (v) => !!v || this.$vuetify.lang.t(`$vuetify.input field is required`),
+      ],
+    };
+  },
   computed: {
     image() {
       return this.form.url;
@@ -96,7 +100,7 @@ export default {
     Edit() {
       this.serverErr = [];
       if (this.validate()) {
-      this.loading = true;
+        this.loading = true;
         this.$store
           .dispatch("Attribute/edit", {
             form: this.form,

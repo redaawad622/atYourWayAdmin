@@ -6,11 +6,14 @@
   >
     <template v-slot:activator="{ on, attrs }">
       <v-btn v-bind="attrs" v-on="on" rounded color="success" elevation="0"
-        ><v-icon left>mdi-plus</v-icon> Add A New Offer</v-btn
-      >
+        ><v-icon left>mdi-plus</v-icon>
+        {{ $vuetify.lang.t(`$vuetify.add a new offer`) }}
+      </v-btn>
     </template>
     <v-sheet min-height="120px" style="overflow: scroll">
-      <v-card-title class="text-center">Add Offer</v-card-title>
+      <v-card-title class="text-center">{{
+        $vuetify.lang.t(`$vuetify.add offer`)
+      }}</v-card-title>
       <v-divider></v-divider>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>

@@ -45,16 +45,20 @@
 <script>
 export default {
   name: "addAtrributeValue",
-  data: () => ({
-    valid: true,
-    sheet: false,
-    loading: false,
-    form: {
-      value: "",
-    },
-    serverErr: [],
-    reqRules: [(v) => !!v || "input is required"],
-  }),
+  data() {
+    return {
+      valid: true,
+      sheet: false,
+      loading: false,
+      form: {
+        value: "",
+      },
+      serverErr: [],
+      reqRules: [
+        (v) => !!v || this.$vuetify.lang.t(`$vuetify.input field is required`),
+      ],
+    };
+  },
   methods: {
     toggle(val) {
       this.$emit("input", val);

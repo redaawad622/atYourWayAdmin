@@ -13,14 +13,14 @@
           <v-text-field
             outlined
             v-model="form.name"
-            label="option title"
+            :label="$vuetify.lang.t('$vuetify.option title')"
             :error-messages="serverErr['name']"
             :rules="reqRules"
           ></v-text-field>
           <v-text-field
             outlined
             v-model="form.value"
-            label="option value"
+            :label="$vuetify.lang.t('$vuetify.option value')"
           ></v-text-field>
         </v-form>
       </v-card-text>
@@ -32,14 +32,14 @@
           min-width="150px"
           :loading="loading"
           @click="Edit()"
-          >Edit</v-btn
+          >{{ $vuetify.lang.t("$vuetify.edit") }}</v-btn
         >
         <v-btn
           class="mt-3"
           color="error"
           min-width="150px"
           @click="toggle(false)"
-          >Close</v-btn
+          >{{ $vuetify.lang.t("$vuetify.close") }}</v-btn
         >
       </v-card-actions>
     </v-sheet>
@@ -50,16 +50,20 @@
 export default {
   name: "editAttributeValue",
   props: ["value", "item"],
-  data: () => ({
-    reqRules: [(v) => !!v || "input is required"],
-    valid: true,
-    form: {
-      price: 0,
-      quantity: 0,
-    },
-    loading: false,
-    serverErr: [],
-  }),
+  data() {
+    return {
+      reqRules: [
+        (v) => !!v || this.$vuetify.lang.t(`$vuetify.input field is required`),
+      ],
+      valid: true,
+      form: {
+        price: 0,
+        quantity: 0,
+      },
+      loading: false,
+      serverErr: [],
+    };
+  },
 
   methods: {
     toggle(val) {
@@ -80,12 +84,32 @@ export default {
           .then((res) => {
             this.$store.commit("Product/editProductOption", res.data);
             this.toggle(false);
+            this.$toasted.success(
+              this.$vuetify.lang.t("$vuetify.Edited successfully"),
+              {
+                duration: 3000,
+              }
+            );
           })
           .catch((rej) => {
             if (rej.response.status == 422)
               this.serverErr = rej.response.data.errors;
+
+            this.$toasted.error(
+              this.$vuetify.lang.t("$vuetify.Failed to edit"),
+              {
+                duration: 3000,
+              }
+            );
           })
           .finally(() => (this.loading = false));
+      } else {
+        this.$toasted.error(
+          this.$vuetify.lang.t("$vuetify.form validation error"),
+          {
+            duration: 3000,
+          }
+        );
       }
     },
   },

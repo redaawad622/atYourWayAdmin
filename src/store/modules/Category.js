@@ -68,6 +68,9 @@ const mutations = {
   setCats(state, payload) {
     state.categories = payload;
   },
+  pushCat(state, payload) {
+    state.categories.unshift(payload);
+  },
 };
 
 export default {

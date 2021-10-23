@@ -1,44 +1,50 @@
 <template>
   <v-card-text>
-    <v-autocomplete
-      :items="attributes"
-      item-text="name"
-      item-value="id"
-      v-model="selectedAttr"
-      auto-select-first
-      outlined
-      label="select attribute"
-    ></v-autocomplete>
-    <v-autocomplete
-      :items="attributeValues"
-      item-text="value"
-      item-value="value"
-      v-model="selectedVal"
-      auto-select-first
-      v-if="selectedAttr"
-      outlined
-      :loading="loading"
-      :error-messages="message"
-      label="select value"
-    ></v-autocomplete>
-    <template v-if="selectedVal">
-      <v-text-field
+    <v-form ref="AddAttrForm" lazy-validation>
+      <v-autocomplete
+        :items="attributes"
+        item-text="name"
+        item-value="id"
+        v-model="selectedAttr"
+        auto-select-first
         outlined
-        type="number"
-        v-model="price"
-        label="price"
-      ></v-text-field>
-      <v-text-field
+        :label="$vuetify.lang.t('$vuetify.select attribute')"
+      ></v-autocomplete>
+      <v-autocomplete
+        :items="attributeValues"
+        item-text="value"
+        item-value="value"
+        v-model="selectedVal"
+        auto-select-first
+        v-if="selectedAttr"
         outlined
-        type="number"
-        v-model="quantity"
-        label="quantity"
-      ></v-text-field>
-      <v-btn :loading="loadingAdd" color="primary" @click="AddProductAttr"
-        >Add Attribute</v-btn
-      >
-    </template>
-    <v-card-title>Product Attributes and Values</v-card-title>
+        :loading="loading"
+        :error-messages="message"
+        :label="$vuetify.lang.t('$vuetify.select value')"
+      ></v-autocomplete>
+      <template v-if="selectedVal">
+        <v-text-field
+          outlined
+          type="number"
+          v-model="price"
+          :label="$vuetify.lang.t('$vuetify.price')"
+          :rules="isNumber"
+        ></v-text-field>
+        <v-text-field
+          outlined
+          type="number"
+          v-model="quantity"
+          :label="$vuetify.lang.t('$vuetify.quantity')"
+          :rules="isNumber"
+        ></v-text-field>
+        <v-btn :loading="loadingAdd" color="primary" @click="AddProductAttr">{{
+          $vuetify.lang.t("$vuetify.add attribute")
+        }}</v-btn>
+      </template>
+    </v-form>
+    <v-card-title>{{
+      $vuetify.lang.t("$vuetify.product attributes and values")
+    }}</v-card-title>
     <data-table
       :link="link"
       :columns="columns"
@@ -73,10 +79,17 @@ export default {
       loading: false,
       loadingAdd: false,
       message: "",
+     isNumber: [
+        (v) =>
+          /^\s*(?=.*[0-9])\d*(?:\.\d{1,2})?\s*$/.test(v) ||
+          this.$vuetify.lang.t(
+            `$vuetify.number must be equal or greater than 0`
+          ),
+      ],
       columns: [
-        { name: "Value", dataProp: "value", type: "text" },
-        { name: "Price", dataProp: "price", type: "text" },
-        { name: "Quantity", dataProp: "quantity", type: "text" },
+        { name: "value", dataProp: "value", type: "text" },
+        { name: "price", dataProp: "price", type: "text" },
+        { name: "quantity", dataProp: "quantity", type: "text" },
       ],
       options: [
         {
@@ -120,26 +133,47 @@ export default {
       this.$store.dispatch("Attribute/getAttributes");
     },
     AddProductAttr() {
-      this.loadingAdd = true;
       this.message = "";
-      this.$store
-        .dispatch("Product/AddProductAttr", {
-          attribute_id: this.selectedAttr,
-          value: this.selectedVal,
-          price: this.price,
-          quantity: this.quantity,
-        })
-        .then(() => {
-          this.selectedVal = "";
-          this.price = 0;
-          this.quantity = 0;
-        })
-        .catch(() => {
-          this.message = "product attribute is exist";
-        })
-        .finally(() => {
-          this.loadingAdd = false;
-        });
+      if (this.$refs.AddAttrForm.validate()) {
+        this.loadingAdd = true;
+        this.$store
+          .dispatch("Product/AddProductAttr", {
+            attribute_id: this.selectedAttr,
+            value: this.selectedVal,
+            price: this.price,
+            quantity: this.quantity,
+          })
+          .then(() => {
+            this.selectedVal = "";
+            this.price = 0;
+            this.quantity = 0;
+            this.$toasted.success(
+              this.$vuetify.lang.t("$vuetify.Added successfully"),
+              {
+                duration: 3000,
+              }
+            );
+          })
+          .catch(() => {
+            this.message = "product attribute is exist";
+            this.$toasted.success(
+              this.$vuetify.lang.t("$vuetify.Failed to add"),
+              {
+                duration: 3000,
+              }
+            );
+          })
+          .finally(() => {
+            this.loadingAdd = false;
+          });
+      } else {
+        this.$toasted.error(
+          this.$vuetify.lang.t("$vuetify.form validation error"),
+          {
+            duration: 3000,
+          }
+        );
+      }
     },
   },
   watch: {

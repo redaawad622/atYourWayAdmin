@@ -218,14 +218,26 @@ export default {
             })
             .then(() => {
               this.actionLoading = false;
-
+              this.$toasted.success(
+                this.$vuetify.lang.t("$vuetify.Deleted successfully"),
+                {
+                  duration: 3000,
+                }
+              );
               this.$emit("delete", index);
+            })
+            .catch(() => {
+              this.$toasted.success(
+                this.$vuetify.lang.t("$vuetify.Failed to deleteF"),
+                {
+                  duration: 3000,
+                }
+              );
             });
 
           break;
         case "edit":
           if (op.link) {
-            console.log(item);
             this.$router.push(this.$route.path + "/" + item.id + "/edit");
           }
           this.$emit("edit", item);

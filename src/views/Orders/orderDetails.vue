@@ -1,8 +1,8 @@
 <template>
   <v-container fluid>
     <v-card-title v-if="order"
-      >({{ order.user.name }}) Order details</v-card-title
-    >
+      >{{ $vuetify.lang.t("$vuetify.order details", order.user.name) }}
+    </v-card-title>
     <v-card class="defaultCard" elevation="0">
       <v-card-text>
         <data-table
@@ -37,17 +37,26 @@ export default {
   data() {
     return {
       columns: [
-        { name: "Sku", dataProp: "sku", type: "link" ,to:'/products/' },
-        { name: "Title", dataProp: "title", type: "text" },
-        { name: "Quantity", dataProp: "quantity", type: "text" },
-        { name: "details", dataProp: "details",objProp:'value', type: "arrayOfObject" },
+        {
+          name: "sku",
+          dataProp: "sku",
+          type: "link",
+          to: "/products/",
+          target: "_blank",
+        },
+        { name: "title", dataProp: "title", type: "text" },
+        { name: "quantity", dataProp: "quantity", type: "text" },
+        {
+          name: "details",
+          dataProp: "details",
+          objProp: "value",
+          type: "arrayOfObject",
+        },
       ],
       options: [],
     };
   },
-  methods: {
-
-  },
+  methods: {},
   created() {
     this.$store.commit("DataTable/reset");
     this.$store.dispatch("Order/getDetails", this.$route.params.id);

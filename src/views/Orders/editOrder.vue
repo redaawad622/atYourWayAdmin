@@ -6,13 +6,15 @@
     scrollable
   >
     <v-sheet min-height="120px" style="overflow: scroll">
-      <v-card-title class="text-center">Edit order</v-card-title>
+      <v-card-title class="text-center">{{
+        $vuetify.lang.t("$vuetify.edit order")
+      }}</v-card-title>
       <v-divider></v-divider>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-textarea
             outlined
-            label="note"
+            :label="$vuetify.lang.t('$vuetify.note')"
             :error-messages="serverErr['note']"
             v-model="form.note"
             auto-grow
@@ -27,14 +29,14 @@
           min-width="150px"
           :loading="loading"
           @click="Edit()"
-          >Edit</v-btn
+          >{{ $vuetify.lang.t("$vuetify.edit") }}</v-btn
         >
         <v-btn
           class="mt-3"
           color="error"
           min-width="150px"
           @click="toggle(false)"
-          >Close</v-btn
+          >{{ $vuetify.lang.t("$vuetify.close") }}</v-btn
         >
       </v-card-actions>
     </v-sheet>
@@ -81,10 +83,23 @@ export default {
           .then((res) => {
             this.$store.commit("DataTable/edit", res.data);
             this.toggle(false);
+            this.$toasted.success(
+              this.$vuetify.lang.t("$vuetify.Edited successfully"),
+              {
+                duration: 3000,
+              }
+            );
           })
           .catch((rej) => {
             if (rej.response.status == 422)
               this.serverErr = rej.response.data.errors;
+
+            this.$toasted.error(
+              this.$vuetify.lang.t("$vuetify.Failed to edit"),
+              {
+                duration: 3000,
+              }
+            );
           })
           .finally(() => (this.loading = false));
       }

@@ -84,22 +84,23 @@
 export default {
   name: "editOffer",
   props: ["value", "item"],
-  data: () => ({
-    valid: true,
-    dataImage: "",
-    sheet: false,
-    form: {
-      url: "",
-      dexcription: "",
-      availablity: true,
-      isRight: false,
-      title: "",
-      legend: "",
-    },
-    loading: false,
-    descRules: [(v) => !!v || "Description is required"],
-    serverErr: [],
-  }),
+  data() {
+    return {
+      valid: true,
+      dataImage: "",
+      sheet: false,
+      form: {
+        url: "",
+        dexcription: "",
+        availablity: true,
+        isRight: false,
+        title: "",
+        legend: "",
+      },
+      loading: false,
+      serverErr: [],
+    };
+  },
   computed: {
     image() {
       return this.form.url;

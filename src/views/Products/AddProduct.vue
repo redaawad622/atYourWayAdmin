@@ -176,14 +176,34 @@ export default {
         this.$store
           .dispatch("Product/add", this.$objectToFormData(this.form))
           .then((res) => {
+            this.$toasted.success(
+              this.$vuetify.lang.t("$vuetify.Added successfully"),
+              {
+                duration: 3000,
+              }
+            );
             this.$router.replace(`/products/${res.data.id}/edit`);
             this.reset();
           })
           .catch((rej) => {
             if (rej.response.status == 422)
               this.serverErr = rej.response.data.errors;
+
+            this.$toasted.error(
+              this.$vuetify.lang.t("$vuetify.Failed to add"),
+              {
+                duration: 3000,
+              }
+            );
           })
           .finally(() => (this.loading = false));
+      } else {
+        this.$toasted.error(
+          this.$vuetify.lang.t("$vuetify.form validation error"),
+          {
+            duration: 3000,
+          }
+        );
       }
     },
   },

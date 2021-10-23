@@ -122,10 +122,20 @@ export default {
             image: "",
           };
           this.toggle(false);
+          this.$toasted.success(
+            this.$vuetify.lang.t("$vuetify.Edited successfully"),
+            {
+              duration: 3000,
+            }
+          );
         })
         .catch((rej) => {
           if (rej.response.status == 422)
             this.serverErr = rej.response.data.errors;
+
+          this.$toasted.error(this.$vuetify.lang.t("$vuetify.Failed to edit"), {
+            duration: 3000,
+          });
         })
         .finally(() => (this.loading = false));
     },

@@ -1,19 +1,25 @@
 <template>
   <v-card-text>
-    <v-text-field
-      outlined
-      v-model="form.name"
-      label="option title"
-      :error-messages="serverErr['name']"
-      :rules="reqRules"
-    ></v-text-field>
-    <v-text-field
-      outlined
-      v-model="form.value"
-      label="option value"
-    ></v-text-field>
-    <v-btn color="primary" @click="AddProductOption">Add</v-btn>
-    <v-card-title>Product options and Values</v-card-title>
+    <v-form ref="addOptionForm" lazy-validation>
+      <v-text-field
+        outlined
+        v-model="form.name"
+        :label="$vuetify.lang.t('$vuetify.option title')"
+        :error-messages="serverErr['name']"
+        :rules="reqRules"
+      ></v-text-field>
+      <v-text-field
+        outlined
+        v-model="form.value"
+        :label="$vuetify.lang.t('$vuetify.option value')"
+      ></v-text-field>
+      <v-btn color="primary" @click="AddProductOption">
+        {{ $vuetify.lang.t("$vuetify.add") }}</v-btn
+      >
+    </v-form>
+    <v-card-title>
+      {{ $vuetify.lang.t("$vuetify.product options and values") }}</v-card-title
+    >
     <data-table
       :link="link"
       :columns="columns"
@@ -36,7 +42,9 @@ export default {
   components: { dataTable, EditOption },
   data() {
     return {
-      reqRules: [(v) => !!v || "input is required"],
+      reqRules: [
+        (v) => !!v || this.$vuetify.lang.t(`$vuetify.input field is required`),
+      ],
       open: false,
       editItem: null,
       form: {
@@ -47,8 +55,8 @@ export default {
       loading: false,
       loadingAdd: false,
       columns: [
-        { name: "Option Title", dataProp: "name", type: "text" },
-        { name: "Option Value", dataProp: "value", type: "text" },
+        { name: "option title", dataProp: "name", type: "text" },
+        { name: "option value", dataProp: "value", type: "text" },
       ],
       options: [
         {
@@ -82,28 +90,49 @@ export default {
     deleteItem(item) {
       this.$store.commit("Product/deleteProductOption", item);
     },
-    
+
     AddProductOption() {
-      this.loadingAdd = true;
-      this.serverErr = [];
-      this.$store
-        .dispatch("Product/AddProductOption", this.form)
-        .then(() => {
-          this.form = {
-            name: "",
-            value: "",
-          };
-        })
-        .catch((rej) => {
-          if (rej.response.status == 422)
-            this.serverErr = rej.response.data.errors;
-        })
-        .finally(() => {
-          this.loadingAdd = false;
-        });
+      if (this.$refs.addOptionForm.validate()) {
+        this.loadingAdd = true;
+        this.serverErr = [];
+        this.$store
+          .dispatch("Product/AddProductOption", this.form)
+          .then(() => {
+            this.form = {
+              name: "",
+              value: "",
+            };
+            this.$toasted.success(
+              this.$vuetify.lang.t("$vuetify.Added successfully"),
+              {
+                duration: 3000,
+              }
+            );
+          })
+          .catch((rej) => {
+            if (rej.response.status == 422)
+              this.serverErr = rej.response.data.errors;
+
+            this.$toasted.error(
+              this.$vuetify.lang.t("$vuetify.Failed to add"),
+              {
+                duration: 3000,
+              }
+            );
+          })
+          .finally(() => {
+            this.loadingAdd = false;
+          });
+      } else {
+        this.$toasted.error(
+          this.$vuetify.lang.t("$vuetify.form validation error"),
+          {
+            duration: 3000,
+          }
+        );
+      }
     },
   },
-
 };
 </script>
 

@@ -116,6 +116,13 @@ export default {
         .dispatch("Category/add", this.$objectToFormData(this.form))
         .then((res) => {
           this.$store.commit("DataTable/add", res.data);
+          this.$store.commit("Category/pushCat", res.data);
+          this.$toasted.success(
+            this.$vuetify.lang.t("$vuetify.Added successfully"),
+            {
+              duration: 3000,
+            }
+          );
           this.form = {
             name: "",
             description: "",
@@ -128,6 +135,10 @@ export default {
         .catch((rej) => {
           if (rej.response.status == 422)
             this.serverErr = rej.response.data.errors;
+
+          this.$toasted.error(this.$vuetify.lang.t("$vuetify.Failed to add"), {
+            duration: 3000,
+          });
         })
         .finally(() => (this.loading = false));
     },
