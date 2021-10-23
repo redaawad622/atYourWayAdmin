@@ -197,4 +197,5 @@ export default {
   details: "تفاصيل",
   "add a new offer": "إضافة عرض جديد",
   "add offer": "إضافة عرض",
+  error: "خطأ",
 };

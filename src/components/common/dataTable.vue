@@ -50,11 +50,7 @@
                 x-small
                 outlined
                 v-else-if="row.type == 'bool'"
-                :color="
-                  item[row.dataProp]
-                    ? $vuetify.lang.t(`$vuetify.success`)
-                    : $vuetify.lang.t(`$vuetify.error`)
-                "
+                :color="item[row.dataProp] ? 'success' : 'error'"
               >
                 {{
                   item[row.dataProp]
@@ -228,7 +224,7 @@ export default {
             })
             .catch(() => {
               this.$toasted.success(
-                this.$vuetify.lang.t("$vuetify.Failed to deleteF"),
+                this.$vuetify.lang.t("$vuetify.Failed to delete"),
                 {
                   duration: 3000,
                 }

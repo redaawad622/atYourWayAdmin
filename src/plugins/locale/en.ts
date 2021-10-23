@@ -196,4 +196,5 @@ export default {
   details: "details",
   "add a new offer": "add a new offer",
   "add offer": "add offer",
+  error: "error",
 };
