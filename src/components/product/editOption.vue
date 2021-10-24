@@ -6,7 +6,7 @@
     scrollable
   >
     <v-sheet min-height="120px" style="overflow: scroll">
-      <v-card-title class="text-center">Edit Attribute</v-card-title>
+      <v-card-title class="text-center text-capitalize">Edit Attribute</v-card-title>
       <v-divider></v-divider>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>

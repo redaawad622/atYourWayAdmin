@@ -15,7 +15,7 @@
           height="130px"
           src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
         >
-          <v-card-title>Welcome Back!</v-card-title>
+          <v-card-title class="text-capitalize">Welcome Back!</v-card-title>
           <v-card-subtitle>Sign in to continue</v-card-subtitle>
         </v-img>
 

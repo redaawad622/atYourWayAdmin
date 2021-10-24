@@ -17,7 +17,7 @@
         {{ $vuetify.lang.t("$vuetify.add") }}</v-btn
       >
     </v-form>
-    <v-card-title>
+    <v-card-title class="text-capitalize"> 
       {{ $vuetify.lang.t("$vuetify.product options and values") }}</v-card-title
     >
     <data-table

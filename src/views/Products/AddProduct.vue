@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-card-title>{{ $vuetify.lang.t(`$vuetify.add product`) }}</v-card-title>
+    <v-card-title class="text-capitalize">{{ $vuetify.lang.t(`$vuetify.add product`) }}</v-card-title>
     <v-card class="defaultCard" elevation="0">
       <v-card-title>{{
         $vuetify.lang.t(`$vuetify.product information`)

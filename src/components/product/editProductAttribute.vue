@@ -6,7 +6,7 @@
     scrollable
   >
     <v-sheet min-height="120px" style="overflow: scroll">
-      <v-card-title class="text-center">{{
+      <v-card-title class="text-center text-capitalize">{{
         $vuetify.lang.t("$vuetify.edit attribute")
       }}</v-card-title>
       <v-divider></v-divider>

@@ -6,7 +6,7 @@
     scrollable
   >
     <v-sheet min-height="120px" style="overflow: scroll">
-      <v-card-title class="text-center">{{
+      <v-card-title class="text-center text-capitalize">{{
         $vuetify.lang.t("$vuetify.edit order")
       }}</v-card-title>
       <v-divider></v-divider>
@@ -102,6 +102,13 @@ export default {
             );
           })
           .finally(() => (this.loading = false));
+      } else {
+        this.$toasted.error(
+          this.$vuetify.lang.t("$vuetify.form validation error"),
+          {
+            duration: 3000,
+          }
+        );
       }
     },
   },

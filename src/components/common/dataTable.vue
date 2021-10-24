@@ -4,6 +4,9 @@
       <template v-slot:default>
         <thead>
           <tr>
+            <th v-if="option">
+              <v-checkbox></v-checkbox>
+            </th>
             <th
               v-for="(column, index) in columns"
               :key="index + 'column'"
@@ -21,6 +24,9 @@
             v-for="(item, k) in values ? values : dataCollection"
             :key="item.name"
           >
+            <td v-if="option">
+              <v-checkbox></v-checkbox>
+            </td>
             <td
               v-for="(row, index) in columns"
               :class="'td' + index"
@@ -114,7 +120,10 @@
             </td>
           </tr>
           <tr v-if="loading">
-            <td class="text-center pt-2" :colspan="columns.length">
+            <td
+              class="text-center pt-2"
+              :colspan="columns.length + (option ? 2 : 0)"
+            >
               <v-progress-circular
                 :size="40"
                 color="primary"
@@ -122,16 +131,49 @@
               ></v-progress-circular>
             </td>
           </tr>
+          <tr
+            v-if="
+              dataCollection.length < 1 &&
+              !loading &&
+              (values ? values.length < 1 : true)
+            "
+          >
+            <td
+              class="text-center pt-2 text-capitalize"
+              :colspan="columns.length + (option ? 2 : 0)"
+            >
+              {{ $vuetify.lang.t(`$vuetify.no data found`) }}
+            </td>
+          </tr>
         </tbody>
       </template>
     </v-simple-table>
-    <div class="flex justify-end" v-if="pagination && meta">
+    <div
+      class="d-flex justify-space-between align-center flex-wrap"
+      v-if="pagination && meta"
+    >
       <v-pagination
         circle
         v-model="page"
         v-if="meta.last_page > 1"
         :length="meta.last_page"
+        :total-visible="$vuetify.breakpoint.xs ? 4 : 8"
+        class="my-2"
       ></v-pagination>
+      <v-combobox
+        outlined
+        class="my-2"
+        hide-details
+        dense
+        :items="[5, 10, 15, 20, 50, 100, 200, 500, 700, 1000, 10000]"
+        :style="{
+          'max-width: 150px; min-width: 120px': !$vuetify.breakpoint.xs,
+        }"
+        :label="$vuetify.lang.t(`$vuetify.rows per page`)"
+        type="number"
+        v-model="per_page"
+      >
+      </v-combobox>
     </div>
   </v-sheet>
 </template>
@@ -202,34 +244,69 @@ export default {
         options
       );
     },
+    deleteItem(item, index) {
+      this.actionLoading = true;
+      this.$store
+        .dispatch("DataTable/deleteItem", {
+          link: this.link + "/" + item.id,
+          index: index,
+        })
+        .then(() => {
+          this.actionLoading = false;
+          this.$toasted.success(
+            this.$vuetify.lang.t("$vuetify.Deleted successfully"),
+            {
+              duration: 3000,
+            }
+          );
+          this.$emit("delete", index);
+        })
+        .catch((rej) => {
+          console.log(rej.response);
+          if (rej.response.status == 423) {
+            this.$toasted.error(rej.response.data, {
+              duration: 5000,
+            });
+          } else {
+            this.$toasted.error(
+              this.$vuetify.lang.t("$vuetify.Failed to delete"),
+              {
+                duration: 3000,
+              }
+            );
+          }
+        });
+    },
     doOption(op, item, index) {
       switch (op.type) {
         case "delete":
           //do delete request
-          this.actionLoading = true;
-          this.$store
-            .dispatch("DataTable/deleteItem", {
-              link: this.link + "/" + item.id,
-              index: index,
-            })
-            .then(() => {
-              this.actionLoading = false;
-              this.$toasted.success(
-                this.$vuetify.lang.t("$vuetify.Deleted successfully"),
+          this.$toasted.show(
+            this.$vuetify.lang.t(
+              "$vuetify.are you sure you want to delete this item?"
+            ),
+            {
+              // pass the icon name as string
+              position: "top-center",
+              fullWidth: false,
+              singleton: true,
+              action: [
                 {
-                  duration: 3000,
-                }
-              );
-              this.$emit("delete", index);
-            })
-            .catch(() => {
-              this.$toasted.success(
-                this.$vuetify.lang.t("$vuetify.Failed to delete"),
+                  text: this.$vuetify.lang.t("$vuetify.Cancel"),
+                  onClick: (e, toastObject) => {
+                    toastObject.goAway(0);
+                  },
+                },
                 {
-                  duration: 3000,
-                }
-              );
-            });
+                  text: this.$vuetify.lang.t("$vuetify.Yes"),
+                  onClick: (e, toastObject) => {
+                    this.deleteItem(item, index);
+                    toastObject.goAway(0);
+                  },
+                },
+              ],
+            }
+          );
 
           break;
         case "edit":
@@ -250,17 +327,22 @@ export default {
   data() {
     return {
       page: 1,
+      per_page: 15,
       actionLoading: false,
     };
   },
   created() {
     if (!this.values) {
-      this.getData(this.link + "?page=1");
+      this.getData(this.link + "?page=1&per_page=15");
     }
   },
   watch: {
     page(val) {
-      this.getData(this.link + `?page=${val}`);
+      this.getData(this.link + `?page=${val}&per_page=${this.per_page}`);
+    },
+    per_page() {
+      this.page = 1;
+      this.getData(this.link + `?page=${this.page}&per_page=${this.per_page}`);
     },
   },
 };

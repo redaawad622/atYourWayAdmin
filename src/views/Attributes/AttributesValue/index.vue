@@ -1,9 +1,9 @@
 <template>
   <v-container fluid>
-    <v-card-title v-if="attribute"
-      >{{ attribute.name }} Attributes Values</v-card-title
-    >
-    <v-card class="defaultCard" elevation="0">
+    <v-card-title class="text-capitalize" v-if="attribute">{{
+      $vuetify.lang.t(`$vuetify.attribute values`, attribute.name)
+    }}</v-card-title>
+    <v-card class="defaultCard" elevation="0" :loading="loading">
       <v-card-text>
         <div class="d-flex justify-space-between">
           <v-spacer></v-spacer><add-attribute-value></add-attribute-value>
@@ -16,7 +16,6 @@
           @edit="edit"
           @delete="deleteItem"
           :values="values"
-          v-if="attribute"
         ></data-table>
       </v-card-text>
     </v-card>
@@ -44,11 +43,12 @@ export default {
   data() {
     return {
       open: false,
+      loading: false,
       editItem: null,
       columns: [
-        { name: "Value", dataProp: "value", type: "text" },
+        { name: "value", dataProp: "value", type: "text" },
 
-        { name: "Create Date", dataProp: "created_at", type: "date" },
+        { name: "create date", dataProp: "created_at", type: "date" },
       ],
       options: [
         {
@@ -78,7 +78,12 @@ export default {
   created() {
     this.$store.commit("DataTable/reset");
     this.$store.commit("Attribute/resetValues");
-    this.$store.dispatch("Attribute/getAttrValue", this.$route.params.id);
+    this.loading = true;
+    this.$store
+      .dispatch("Attribute/getAttrValue", this.$route.params.id)
+      .finally(() => {
+        this.loading = false;
+      });
   },
 };
 </script>

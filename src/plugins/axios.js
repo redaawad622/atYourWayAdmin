@@ -11,7 +11,7 @@ import axios from "axios";
 let config = {
   baseURL:
     process.env.NODE_ENV == "production"
-      ? "http://api.atyourway.com/"
+      ? "https://api.atyourway.com/"
       : "http://localhost:8000/",
   // timeout: 60 * 1000, // Timeout
   withCredentials: true, // Check cross-site Access-Control

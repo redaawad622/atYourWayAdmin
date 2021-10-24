@@ -10,7 +10,7 @@
         {{ $vuetify.lang.t(`$vuetify.add a new category`) }}
       </v-btn>
     </template>
-    <v-sheet class="text-center" min-height="120px">
+    <v-sheet class="text-center" min-height="120px" style="overflow: auto">
       <v-card-text>
         <v-text-field
           outlined

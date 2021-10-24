@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
-    <div class="d-flex justify-space-between align-center">
-      <v-card-title v-if="form.title">{{
+    <div class="d-flex mb-2 justify-space-between align-center">
+      <v-card-title class="text-capitalize" v-if="form.title">{{
         $vuetify.lang.t(`$vuetify.Edit product`, form.title)
       }}</v-card-title>
       <v-btn color="primary" to="/product/add">{{
@@ -9,8 +9,8 @@
       }}</v-btn>
     </div>
 
-    <v-card class="defaultCard" elevation="0">
-      <v-card-title>{{
+    <v-card class="defaultCard" elevation="0" :loading="fetchProdLoading">
+      <v-card-title class="text-capitalize">{{
         $vuetify.lang.t(`$vuetify.basic information`)
       }}</v-card-title>
 
@@ -106,7 +106,7 @@
             :label="$vuetify.lang.t(`$vuetify.featured`)"
           ></v-checkbox>
           <v-divider class="my-3"></v-divider>
-          <v-card-title>{{
+          <v-card-title class="text-capitalize">{{
             $vuetify.lang.t(`$vuetify.product meta data`)
           }}</v-card-title>
           <v-text-field
@@ -127,7 +127,7 @@
       </v-card-text>
     </v-card>
     <v-card class="defaultCard mt-4" elevation="0">
-      <v-card-title>{{
+      <v-card-title class="text-capitalize">{{
         $vuetify.lang.t(`$vuetify.product images and details`)
       }}</v-card-title>
       <v-card-text>
@@ -177,19 +177,19 @@
       ></v-file-input>
     </v-card>
     <v-card class="defaultCard mt-2" elevation="0">
-      <v-card-title>{{
+      <v-card-title class="text-capitalize">{{
         $vuetify.lang.t("$vuetify.product attributes")
       }}</v-card-title>
       <product-atrributes></product-atrributes>
     </v-card>
     <v-card class="defaultCard mt-2" elevation="0">
-      <v-card-title>{{
+      <v-card-title class="text-capitalize">{{
         $vuetify.lang.t("$vuetify.product options")
       }}</v-card-title>
       <product-option></product-option>
     </v-card>
     <v-card class="defaultCard mt-2" elevation="0">
-      <v-card-title>{{
+      <v-card-title class="text-capitalize">{{
         $vuetify.lang.t("$vuetify.Offer a discount on the product")
       }}</v-card-title>
       <v-card-text>
@@ -332,6 +332,7 @@ export default {
   data() {
     return {
       model: 0,
+      fetchProdLoading: false,
       discountValid: true,
       valid: true,
       loading: false,
@@ -440,7 +441,7 @@ export default {
           );
         })
         .catch(() => {
-          this.$toasted.success(
+          this.$toasted.error(
             this.$vuetify.lang.t("$vuetify.Failed to delete"),
             {
               duration: 3000,
@@ -517,9 +518,17 @@ export default {
             );
           })
           .finally(() => (this.loading = false));
+      } else {
+        this.$toasted.error(
+          this.$vuetify.lang.t("$vuetify.form validation error"),
+          {
+            duration: 3000,
+          }
+        );
       }
     },
     getProduct() {
+      this.fetchProdLoading = true;
       this.$store
         .dispatch("Product/getProduct", this.$route.params.id)
         .then(() => {
@@ -544,6 +553,9 @@ export default {
               ":" +
               date.getSeconds();
           }
+        })
+        .finally(() => {
+          this.fetchProdLoading = false;
         });
     },
   },

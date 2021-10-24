@@ -2,18 +2,21 @@
   <v-bottom-sheet v-model="sheet" :inset="!this.$vuetify.breakpoint.smAndDown">
     <template v-slot:activator="{ on, attrs }">
       <v-btn v-bind="attrs" v-on="on" rounded color="success" elevation="0"
-        ><v-icon left>mdi-plus</v-icon> Add A New attribute value</v-btn
+        ><v-icon left>mdi-plus</v-icon>
+        {{ $vuetify.lang.t(`$vuetify.add a new attribute value`) }}</v-btn
       >
     </template>
     <v-sheet min-height="120px" style="overflow: scroll">
-      <v-card-title class="text-center">Add a new attribute value</v-card-title>
+      <v-card-title class="text-center text-capitalize">{{
+        $vuetify.lang.t(`$vuetify.add a new attribute value`)
+      }}</v-card-title>
       <v-divider></v-divider>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-text-field
             outlined
             v-model="form.value"
-            label="value name"
+            :label="$vuetify.lang.t(`$vuetify.value name`)"
             :error-messages="serverErr['value']"
             :rules="reqRules"
             @focus="serverErr = []"
@@ -28,14 +31,14 @@
           min-width="150px"
           :loading="loading"
           @click="Add()"
-          >Add</v-btn
+          >{{ $vuetify.lang.t(`$vuetify.add`) }}</v-btn
         >
         <v-btn
           class="mt-3"
           color="error"
           min-width="150px"
           @click="sheet = false"
-          >Close</v-btn
+          >{{ $vuetify.lang.t(`$vuetify.close`) }}</v-btn
         >
       </v-card-actions>
     </v-sheet>
@@ -79,12 +82,32 @@ export default {
               value: "",
               price: 0,
             };
+            this.$toasted.success(
+              this.$vuetify.lang.t("$vuetify.Added successfully"),
+              {
+                duration: 3000,
+              }
+            );
           })
           .catch((rej) => {
             if (rej.response.status == 422)
               this.serverErr = rej.response.data.errors;
+
+            this.$toasted.error(
+              this.$vuetify.lang.t("$vuetify.Failed to add"),
+              {
+                duration: 3000,
+              }
+            );
           })
           .finally(() => (this.loading = false));
+      } else {
+        this.$toasted.error(
+          this.$vuetify.lang.t("$vuetify.form validation error"),
+          {
+            duration: 3000,
+          }
+        );
       }
     },
   },

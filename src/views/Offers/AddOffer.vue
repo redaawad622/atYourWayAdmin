@@ -11,7 +11,7 @@
       </v-btn>
     </template>
     <v-sheet min-height="120px" style="overflow: scroll">
-      <v-card-title class="text-center">{{
+      <v-card-title class="text-center text-capitalize">{{
         $vuetify.lang.t(`$vuetify.add offer`)
       }}</v-card-title>
       <v-divider></v-divider>
@@ -22,46 +22,56 @@
               id="imgPreview2"
               height="180px"
               :src="$getUrl(form.url, 'imgPreview2')"
-              alt="paste image url or choose image"
+              :alt="$vuetify.lang.t(`$vuetify.paste image url or choose image`)"
             />
           </div>
           <v-text-field
             outlined
             v-model="form.url"
             :error-messages="serverErr['url']"
-            label="image url"
+            :label="$vuetify.lang.t(`$vuetify.image url`)"
             prepend-inner-icon="mdi-link"
+            v-if="
+              typeof form.url == 'string' || form.url == null || form.url == ''
+            "
           ></v-text-field>
           <v-file-input
             outlined
             accept="image/png, image/jpeg, image/bmp"
-            placeholder="Pick an image"
+            :placeholder="$vuetify.lang.t(`$vuetify.Pick an image`)"
+            :label="$vuetify.lang.t(`$vuetify.Pick an image`)"
             prepend-inner-icon="mdi-camera"
             prepend-icon=""
             v-model="form.url"
-            label="Pick an image"
           ></v-file-input>
           <v-text-field
             outlined
             v-model="form.title"
             :error-messages="serverErr['title']"
-            label="title"
+            :label="$vuetify.lang.t(`$vuetify.title`)"
           ></v-text-field>
           <v-text-field
             outlined
             v-model="form.legend"
             :error-messages="serverErr['legend']"
-            label="legend"
+            :label="$vuetify.lang.t(`$vuetify.legend`)"
           ></v-text-field>
           <v-textarea
             outlined
-            label="description"
+            :label="$vuetify.lang.t(`$vuetify.description`)"
             hide-details
             v-model="form.description"
             auto-grow
           ></v-textarea>
-          <v-switch label="active" v-model="form.availablity"></v-switch>
-          <v-switch label="right text" v-model="form.isRight"></v-switch>
+
+          <v-switch
+            :label="$vuetify.lang.t(`$vuetify.active`)"
+            v-model="form.availablity"
+          ></v-switch>
+          <v-switch
+            :label="$vuetify.lang.t(`$vuetify.right text`)"
+            v-model="form.isRight"
+          ></v-switch>
         </v-form>
       </v-card-text>
       <v-divider></v-divider>
@@ -73,14 +83,14 @@
           :loading="loading"
           :disabled="!valid"
           @click="Add()"
-          >Add</v-btn
+          >{{ $vuetify.lang.t(`$vuetify.add`) }}</v-btn
         >
         <v-btn
           class="mt-3"
           color="error"
           min-width="150px"
           @click="sheet = false"
-          >Close</v-btn
+          >{{ $vuetify.lang.t(`$vuetify.close`) }}</v-btn
         >
       </v-card-actions>
     </v-sheet>
@@ -124,12 +134,32 @@ export default {
               availablity: true,
               isRight: false,
             };
+            this.$toasted.success(
+              this.$vuetify.lang.t("$vuetify.Added successfully"),
+              {
+                duration: 3000,
+              }
+            );
           })
           .catch((rej) => {
             if (rej.response.status == 422)
               this.serverErr = rej.response.data.errors;
+
+            this.$toasted.error(
+              this.$vuetify.lang.t("$vuetify.Failed to add"),
+              {
+                duration: 3000,
+              }
+            );
           })
           .finally(() => (this.loading = false));
+      } else {
+        this.$toasted.error(
+          this.$vuetify.lang.t("$vuetify.form validation error"),
+          {
+            duration: 3000,
+          }
+        );
       }
     },
   },

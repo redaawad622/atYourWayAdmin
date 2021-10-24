@@ -42,7 +42,7 @@
         }}</v-btn>
       </template>
     </v-form>
-    <v-card-title>{{
+    <v-card-title class="text-capitalize">{{
       $vuetify.lang.t("$vuetify.product attributes and values")
     }}</v-card-title>
     <data-table

@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-card-title v-if="order"
+    <v-card-title class="text-capitalize" v-if="order"
       >{{ $vuetify.lang.t("$vuetify.order details", order.user.name) }}
     </v-card-title>
     <v-card class="defaultCard" elevation="0">
