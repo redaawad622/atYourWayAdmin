@@ -220,4 +220,14 @@ export default {
     "are you sure you want to delete this item?",
   all: "all",
   "rows per page": "number of rows per page",
+  "The data has been copied to the clipboard":
+    "The data has been copied to the clipboards",
+  copy: "copy",
+  excel: "excel",
+  json: "json",
+  pdf: "pdf",
+  print: "print",
+  "are you sure you want to delete selected":
+    "are you sure you want to delete selected?",
+  "delete selected": "delete selected",
 };

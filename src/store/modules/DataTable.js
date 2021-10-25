@@ -60,6 +60,19 @@ const actions = {
         });
     });
   },
+  deleteCollection({ commit }, payload) {
+    return new Promise((resolve, reject) => {
+      Vue.axios
+        .post(payload.link, { ids: payload.ids })
+        .then(() => {
+          commit("deleteGroupFromCollection", payload.ids);
+          resolve();
+        })
+        .catch((rej) => {
+          reject(rej);
+        });
+    });
+  },
 };
 
 // mutations
@@ -77,20 +90,28 @@ const mutations = {
     state.loading = payload;
   },
   deleteFromCollection(state, payload) {
-    state.dataCollection.splice(payload,1);
+    state.dataCollection.splice(payload, 1);
+  },
+  deleteGroupFromCollection(state, payload) {
+    payload.forEach((element) => {
+      let index = state.dataCollection.findIndex((elm) => elm.id == element);
+      if (index != -1) state.dataCollection.splice(index, 1);
+    });
   },
   add(state, payload) {
     state.dataCollection.unshift(payload);
   },
   reset(state) {
-    state.dataCollection=[];
-    state.links=null;
-    state.meta=null;
+    state.dataCollection = [];
+    state.links = null;
+    state.meta = null;
   },
   edit(state, payload) {
-    let index=state.dataCollection.findIndex((item)=>item.id===payload.id)
-    if(index !==-1){
-    state.dataCollection.splice(index, 1, payload);
+    let index = state.dataCollection.findIndex(
+      (item) => item.id === payload.id
+    );
+    if (index !== -1) {
+      state.dataCollection.splice(index, 1, payload);
       //state.dataCollection[index]=payload;
     }
   },

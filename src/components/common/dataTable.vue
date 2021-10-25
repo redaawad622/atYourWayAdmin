@@ -1,11 +1,33 @@
 <template>
   <v-sheet>
-    <v-simple-table class="dataTable my-4">
+    <v-btn-toggle class="mt-2">
+      <v-btn @click="copy()">
+        <v-icon class="mx-2"> mdi-content-copy </v-icon>
+        {{ $vuetify.lang.t(`$vuetify.copy`) }}
+      </v-btn>
+      <v-btn @click="copy()">
+        <v-icon class="mx-2"> mdi-file-pdf-box </v-icon>
+        {{ $vuetify.lang.t(`$vuetify.pdf`) }}
+      </v-btn>
+      <v-btn @click="copy()">
+        <v-icon class="mx-2"> mdi-microsoft-excel </v-icon>
+        {{ $vuetify.lang.t(`$vuetify.excel`) }}
+      </v-btn>
+      <v-btn @click="copy()">
+        <v-icon class="mx-2"> mdi-code-json </v-icon>
+        {{ $vuetify.lang.t(`$vuetify.json`) }}
+      </v-btn>
+      <v-btn @click="copy()">
+        <v-icon class="mx-2"> mdi-printer-outline </v-icon>
+        {{ $vuetify.lang.t(`$vuetify.print`) }}
+      </v-btn>
+    </v-btn-toggle>
+    <v-simple-table id="datatable" class="dataTable my-4">
       <template v-slot:default>
         <thead>
           <tr>
             <th v-if="option">
-              <v-checkbox></v-checkbox>
+              <v-checkbox @change="toggle"></v-checkbox>
             </th>
             <th
               v-for="(column, index) in columns"
@@ -13,9 +35,34 @@
               v-text="$vuetify.lang.t(`$vuetify.${column.name}`)"
             ></th>
             <th v-if="option">
-              <v-btn fab icon color="primary" :loading="actionLoading" dark>
-                <v-icon>mdi-dots-horizontal</v-icon>
-              </v-btn>
+              <v-menu offset-y min-width="150px">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    fab
+                    icon
+                    color="primary"
+                    dark
+                    :loading="actionLoading"
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <v-icon>mdi-dots-horizontal</v-icon>
+                  </v-btn>
+                </template>
+
+                <v-list dense>
+                  <v-list-item @click="deleteSelected()">
+                    <v-list-item-icon class="mr-0 pr-0">
+                      <v-icon small color="red">mdi-delete</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-title
+                        v-text="$vuetify.lang.t(`$vuetify.delete selected`)"
+                      ></v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
             </th>
           </tr>
         </thead>
@@ -25,7 +72,7 @@
             :key="item.name"
           >
             <td v-if="option">
-              <v-checkbox></v-checkbox>
+              <v-checkbox v-model="selected[item.id]"></v-checkbox>
             </td>
             <td
               v-for="(row, index) in columns"
@@ -166,9 +213,7 @@
         hide-details
         dense
         :items="[5, 10, 15, 20, 50, 100, 200, 500, 700, 1000, 10000]"
-        :style="{
-          'max-width: 150px; min-width: 120px': !$vuetify.breakpoint.xs,
-        }"
+        :class="{ 'max-150': !$vuetify.breakpoint.xs }"
         :label="$vuetify.lang.t(`$vuetify.rows per page`)"
         type="number"
         v-model="per_page"
@@ -219,10 +264,41 @@ export default {
       ],
     },
   },
+  data() {
+    return {
+      page: 1,
+      per_page: 15,
+      actionLoading: false,
+      selected: {},
+    };
+  },
   computed: {
     ...mapGetters("DataTable", ["dataCollection", "links", "meta", "loading"]),
   },
   methods: {
+    toggle(val) {
+      let data = this.values ? this.values : this.dataCollection;
+      data.forEach((elm) => {
+        this.$set(this.selected, elm.id, val);
+      });
+    },
+    copy() {
+      var range = document.createRange();
+      let containerNode = document.getElementById("datatable");
+      range.selectNode(containerNode);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand("copy");
+      window.getSelection().removeAllRanges();
+      this.$toasted.success(
+        this.$vuetify.lang.t(
+          "$vuetify.The data has been copied to the clipboard"
+        ),
+        {
+          duration: 3000,
+        }
+      );
+    },
     getImage(url) {
       return this.$getUrl(url);
     },
@@ -244,6 +320,72 @@ export default {
         options
       );
     },
+    deleteSelected() {
+      //do delete request
+      this.$toasted.show(
+        this.$vuetify.lang.t(
+          "$vuetify.are you sure you want to delete selected"
+        ),
+        {
+          // pass the icon name as string
+          position: "top-center",
+          fullWidth: false,
+          singleton: true,
+          action: [
+            {
+              text: this.$vuetify.lang.t("$vuetify.Cancel"),
+              onClick: (e, toastObject) => {
+                toastObject.goAway(0);
+              },
+            },
+            {
+              text: this.$vuetify.lang.t("$vuetify.Yes"),
+              onClick: (e, toastObject) => {
+                this.deleteCollection();
+                toastObject.goAway(0);
+              },
+            },
+          ],
+        }
+      );
+    },
+    deleteCollection() {
+      const ids = Object.keys(this.selected).filter((k) => this.selected[k]);
+      if (ids.length < 1) {
+        return null;
+      }
+      this.actionLoading = true;
+      this.$store
+        .dispatch("DataTable/deleteCollection", {
+          link: this.link + "/deleteCollection",
+          ids: ids,
+        })
+        .then(() => {
+          this.actionLoading = false;
+          this.$toasted.success(
+            this.$vuetify.lang.t("$vuetify.Deleted successfully"),
+            {
+              duration: 3000,
+            }
+          );
+          this.$emit("deleteCollection", ids);
+        })
+        .catch((rej) => {
+          this.actionLoading = false;
+          if (rej.response.status == 423) {
+            this.$toasted.error(rej.response.data, {
+              duration: 5000,
+            });
+          } else {
+            this.$toasted.error(
+              this.$vuetify.lang.t("$vuetify.Failed to delete"),
+              {
+                duration: 3000,
+              }
+            );
+          }
+        });
+    },
     deleteItem(item, index) {
       this.actionLoading = true;
       this.$store
@@ -262,7 +404,7 @@ export default {
           this.$emit("delete", index);
         })
         .catch((rej) => {
-          console.log(rej.response);
+          this.actionLoading = false;
           if (rej.response.status == 423) {
             this.$toasted.error(rej.response.data, {
               duration: 5000,
@@ -324,13 +466,7 @@ export default {
       }
     },
   },
-  data() {
-    return {
-      page: 1,
-      per_page: 15,
-      actionLoading: false,
-    };
-  },
+
   created() {
     if (!this.values) {
       this.getData(this.link + "?page=1&per_page=15");
@@ -367,5 +503,8 @@ export default {
 .dataTable tbody tr td,
 .dataTable thead tr th {
   border-color: #eff2f7 !important;
+}
+.max-150 {
+  max-width: 150px;
 }
 </style>

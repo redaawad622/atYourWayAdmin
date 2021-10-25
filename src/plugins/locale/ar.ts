@@ -220,4 +220,13 @@ export default {
   "are you sure you want to delete this item?": "هل انت متأكد انك تريد الحذف",
   all: "الكل",
   "rows per page": "عدد الصفوف لكل صفحة",
+  "The data has been copied to the clipboard": "تم نسخ البيانات إلى الحافظة",
+  copy: "نسخ",
+  excel: "اكسيل",
+  json: "ملف json",
+  pdf: "ملف PDF",
+  print: "طباعة",
+  "are you sure you want to delete selected":
+    "هل أنت متأكد أنك تريد حذف المحدد ؟",
+  "delete selected": "حذف المحدد",
 };
