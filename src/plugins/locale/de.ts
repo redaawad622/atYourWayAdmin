@@ -1,52 +1,52 @@
 export default {
-  badge: "Badge",
-  close: "Close",
+  badge: "Abzeichen",
+  close: "Schließen",
   dataIterator: {
-    noResultsText: "No matching records found",
-    loadingText: "Loading items...",
+    noResultsText: "Keine Elemente gefunden",
+    loadingText: "Lade Elemente...",
   },
   dataTable: {
-    itemsPerPageText: "Rows per page:",
+    itemsPerPageText: "Zeilen pro Seite:",
     ariaLabel: {
-      sortDescending: "Sorted descending.",
-      sortAscending: "Sorted ascending.",
-      sortNone: "Not sorted.",
-      activateNone: "Activate to remove sorting.",
-      activateDescending: "Activate to sort descending.",
-      activateAscending: "Activate to sort ascending.",
+      sortDescending: "Absteigend sortiert.",
+      sortAscending: "Aufsteigend sortiert.",
+      sortNone: "Nicht sortiert.",
+      activateNone: "Aktivieren um Sortierung zu entfernen.",
+      activateDescending: "Aktivieren um absteigend zu sortieren.",
+      activateAscending: "Aktivieren um aufsteigend zu sortieren.",
     },
-    sortBy: "Sort by",
+    sortBy: "Sortiere nach",
   },
   dataFooter: {
-    itemsPerPageText: "Items per page:",
-    itemsPerPageAll: "All",
-    nextPage: "Next page",
-    prevPage: "Previous page",
-    firstPage: "First page",
-    lastPage: "Last page",
-    pageText: "{0}-{1} of {2}",
+    itemsPerPageText: "Elemente pro Seite:",
+    itemsPerPageAll: "Alle",
+    nextPage: "Nächste Seite",
+    prevPage: "Vorherige Seite",
+    firstPage: "Erste Seite",
+    lastPage: "Letzte Seite",
+    pageText: "{0}-{1} von {2}",
   },
   datePicker: {
-    itemsSelected: "{0} selected",
-    nextMonthAriaLabel: "Next month",
-    nextYearAriaLabel: "Next year",
-    prevMonthAriaLabel: "Previous month",
-    prevYearAriaLabel: "Previous year",
+    itemsSelected: "{0} ausgewählt",
+    nextMonthAriaLabel: "Nächsten Monat",
+    nextYearAriaLabel: "Nächstes Jahr",
+    prevMonthAriaLabel: "Vorheriger Monat",
+    prevYearAriaLabel: "Vorheriges Jahr",
   },
-  noDataText: "No data available",
+  noDataText: "Keine Daten vorhanden",
   carousel: {
-    prev: "Previous visual",
-    next: "Next visual",
+    prev: "Vorheriges Bild",
+    next: "Nächstes Bild",
     ariaLabel: {
-      delimiter: "Carousel slide {0} of {1}",
+      delimiter: "Element {0} von {1}",
     },
   },
   calendar: {
-    moreEvents: "{0} more",
+    moreEvents: "{0} mehr",
   },
   fileInput: {
-    counter: "{0} files",
-    counterSize: "{0} files ({1} in total)",
+    counter: "{0} Dateien",
+    counterSize: "{0} Dateien ({1} gesamt)",
   },
   timePicker: {
     am: "AM",
@@ -54,11 +54,11 @@ export default {
   },
   pagination: {
     ariaLabel: {
-      wrapper: "Pagination Navigation",
-      next: "Next page",
-      previous: "Previous page",
-      page: "Goto Page {0}",
-      currentPage: "Current Page, Page {0}",
+      wrapper: "Seitennavigation",
+      next: "Nächste Seite",
+      previous: "Vorherige Seite",
+      page: "Gehe zu Seite {0}",
+      currentPage: "Aktuelle Seite, Seite {0}",
     },
   },
   rating: {
@@ -66,10 +66,13 @@ export default {
       icon: "Rating {0} of {1}",
     },
   },
-  //lang
+
+  //lang ==>do not translate this scope
   en: "English",
   ar: "عربي",
   de: "Deutsch",
+  ///////////////////////////////////////////////////
+
   //main menu
   dashboard: "dashboard",
   categories: "categories",

@@ -2,12 +2,13 @@ import Vue from "vue";
 import Vuetify from "vuetify/lib/framework";
 import en from "./locale/en.ts";
 import ar from "./locale/ar.ts";
+import de from "./locale/de.ts";
 
 Vue.use(Vuetify);
 
 export default new Vuetify({
   lang: {
-    locales: { en, ar },
+    locales: { en, ar, de },
     current: "en",
   },
   theme: {
