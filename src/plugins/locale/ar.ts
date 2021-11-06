@@ -79,7 +79,9 @@ export default {
   attributes: "الصفات",
   setting: "الاعدادات",
   settings: "الاعدادات",
-
+  countries: "الدول",
+  "general settings": "الاعدادات العامة",
+  "payment settings": "اعدادات طرق الدفع",
   //data table
   name: "الاسم",
   description: "الوصف",
@@ -230,4 +232,21 @@ export default {
   "are you sure you want to delete selected":
     "هل أنت متأكد أنك تريد حذف المحدد ؟",
   "delete selected": "حذف المحدد",
+  "countries and states": "الدول و المحافظات",
+  "add a new country": "اضافة دولة جديده",
+  "add country": "اضافة دولة",
+  "add a new state": "اضافة محافظة جديده",
+  "add state": "اضافة محافظة",
+  "country name": "اسم الدولة",
+  "state name": "اسم المحافظة",
+  "edit country name": "تعديل اسم الدولة",
+  "remove country": "حذف الدولة",
+  "country states": "محافظات ({0})",
+  "edit state name": "تعديل اسم المحافظة",
+  "remove state": "مسح المحافظة",
+  "edit country":"تعديل الدولة",
+  "edit state":"تعديل المحافظة",
+  "view states":"المحافظات",
+
+
 };

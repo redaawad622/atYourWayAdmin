@@ -5,14 +5,15 @@ import Categories from "../views/Categories";
 import Orders from "../views/Orders";
 import Offers from "../views/Offers";
 import Attributes from "../views/Attributes";
-import AttributesValue from "../views/Attributes/AttributesValue"
-import Product from "../views/Products"
-import AddProduct from "../views/Products/AddProduct.vue"
-import EditProduct from "../views/Products/EditProduct.vue"
-import orderDetails from "../views/Orders/orderDetails.vue"
-import Setting from "../views/Setting"
-
-
+import AttributesValue from "../views/Attributes/AttributesValue";
+import Product from "../views/Products";
+import AddProduct from "../views/Products/AddProduct.vue";
+import EditProduct from "../views/Products/EditProduct.vue";
+import orderDetails from "../views/Orders/orderDetails.vue";
+import Setting from "../views/Setting";
+import Payment from "../views/Setting/payment";
+import Country from "../views/Country";
+import States from "../views/Country/states";
 
 Vue.use(VueRouter);
 
@@ -57,7 +58,7 @@ const routes = [
     name: "editProduct",
     component: EditProduct,
   },
-  
+
   {
     path: "/attributes",
     name: "attributes",
@@ -73,7 +74,21 @@ const routes = [
     name: "Setting",
     component: Setting,
   },
-  
+  {
+    path: "/setting/payment",
+    name: "payment",
+    component: Payment,
+  },
+  {
+    path: "/countries",
+    name: "Country",
+    component: Country,
+  },
+  {
+    path: "/countries/:id",
+    name: "states",
+    component: States,
+  },
 ];
 
 const router = new VueRouter({

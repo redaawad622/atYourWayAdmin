@@ -11,4 +11,6 @@ export default {
   productOption: "api/productOption",
   reset: "api/reset",
   generate: "api/generate",
+  country: "api/country",
+  state: "api/state",
 };

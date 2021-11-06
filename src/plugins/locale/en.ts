@@ -79,7 +79,9 @@ export default {
   attributes: "attributes",
   setting: "setting",
   settings: "settings",
-
+  countries: "countries",
+  "general settings": "general settings",
+  "payment settings": "payment settings",
   //data table
   name: "name",
   description: "description",
@@ -231,4 +233,20 @@ export default {
   "are you sure you want to delete selected":
     "are you sure you want to delete selected?",
   "delete selected": "delete selected",
+  "countries and states": "Countries And States",
+  "add a new country": "add a new country",
+  "add country": "add country",
+  "add a new state": "add a new state",
+  "add state": "add state",
+  "country name": "country name",
+  "state name": "state name",
+  "edit country name": "edit country name",
+  "edit state name": "edit state name",
+  "remove country": "remove country",
+  "remove state": "remove state",
+  "country states": "states of ({0})",
+  "edit country": "edit country",
+  "edit state": "edit state",
+  "view states": "View states",
+
 };

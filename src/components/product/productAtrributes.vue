@@ -156,7 +156,7 @@ export default {
           })
           .catch(() => {
             this.message = "product attribute is exist";
-            this.$toasted.success(
+            this.$toasted.error(
               this.$vuetify.lang.t("$vuetify.Failed to add"),
               {
                 duration: 3000,

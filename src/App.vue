@@ -20,23 +20,61 @@
         <span v-if="!miniVariant" class="font-weight-bold">ATYOURWAY</span>
       </v-sheet>
       <v-list flat>
-        <v-list-item
-          v-for="item in items"
-          active-class="mainListActive"
-          :to="item.to"
-          :key="item.title"
-          link
-        >
-          <v-list-item-icon>
-            <v-icon color="#6a7187">{{ item.icon }}</v-icon>
-          </v-list-item-icon>
+        <template v-for="item in items">
+          <v-list-group
+            v-if="item.children"
+            :key="item.title + 'group'"
+            prepend-icon="mdi-account-circle"
+          >
+            <template v-slot:activator>
+              <v-list-item-title>{{
+                $vuetify.lang.t(`$vuetify.${item.title}`)
+              }}</v-list-item-title>
+            </template>
+            <v-list-item
+              v-for="child in item.children"
+              active-class="mainListActive"
+              :to="child.to"
+              :key="child.title"
+              link
+            >
+              <v-list-item-icon v-if="child.icon">
+                <v-icon color="#6a7187">{{ child.icon }}</v-icon>
+              </v-list-item-icon>
 
-          <v-list-item-content>
-            <v-list-item-title class="text-capitalize" style="color: #6a7187">{{
-              $vuetify.lang.t(`$vuetify.${item.title}`)
-            }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+              <v-list-item-content>
+                <v-list-item-title
+                  class="text-capitalize"
+                  style="color: #6a7187"
+                  >{{
+                    $vuetify.lang.t(`$vuetify.${child.title}`)
+                  }}</v-list-item-title
+                >
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>
+          <v-list-item
+            v-else
+            active-class="mainListActive"
+            :to="item.to"
+            :key="item.title"
+            link
+          >
+            <v-list-item-icon>
+              <v-icon color="#6a7187">{{ item.icon }}</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title
+                class="text-capitalize"
+                style="color: #6a7187"
+                >{{
+                  $vuetify.lang.t(`$vuetify.${item.title}`)
+                }}</v-list-item-title
+              >
+            </v-list-item-content>
+          </v-list-item>
+        </template>
       </v-list>
     </v-navigation-drawer>
 
@@ -79,7 +117,19 @@ export default {
       { title: "orders", to: "/orders", icon: "mdi-cart-arrow-down" },
       { title: "offers", to: "/offers", icon: "mdi-offer" },
       { title: "attributes", to: "/attributes", icon: "mdi-sort-ascending" },
-      { title: "setting", to: "/setting", icon: "mdi-cog" },
+      { title: "countries", to: "/countries", icon: "mdi-sort-ascending" },
+      {
+        title: "settings",
+        icon: "mdi-cog",
+        children: [
+          { title: "general settings", to: "/setting", icon: "mdi-cog" },
+          {
+            title: "payment settings",
+            to: "/setting/payment",
+            icon: "mdi-cog",
+          },
+        ],
+      },
     ],
   }),
   computed: {
