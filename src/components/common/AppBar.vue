@@ -40,6 +40,11 @@
         </v-list-item>
       </template>
       <v-list dense>
+        <v-list-item target="_blank" :href="user.store.link">
+          <v-list-item-title class="text-capitalize">{{
+            $vuetify.lang.t(`$vuetify.my store`)
+          }}</v-list-item-title>
+        </v-list-item>
         <v-list-item @click="logout">
           <v-list-item-title class="text-capitalize">{{
             $vuetify.lang.t(`$vuetify.logout`)

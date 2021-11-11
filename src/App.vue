@@ -24,12 +24,17 @@
           <v-list-group
             v-if="item.children"
             :key="item.title + 'group'"
-            prepend-icon="mdi-account-circle"
+            :prepend-icon="item.icon"
+            active-class="mainListActive"
           >
             <template v-slot:activator>
-              <v-list-item-title>{{
-                $vuetify.lang.t(`$vuetify.${item.title}`)
-              }}</v-list-item-title>
+              <v-list-item-title
+                class="text-capitalize"
+                style="color: #6a7187"
+                >{{
+                  $vuetify.lang.t(`$vuetify.${item.title}`)
+                }}</v-list-item-title
+              >
             </template>
             <v-list-item
               v-for="child in item.children"
@@ -37,6 +42,7 @@
               :to="child.to"
               :key="child.title"
               link
+              exact
             >
               <v-list-item-icon v-if="child.icon">
                 <v-icon color="#6a7187">{{ child.icon }}</v-icon>

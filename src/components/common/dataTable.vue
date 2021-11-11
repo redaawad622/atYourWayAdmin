@@ -1,25 +1,35 @@
 <template>
   <v-sheet>
-    <v-btn-toggle class="mt-2">
+    <v-btn-toggle class="mt-2" max="2" :dense="$vuetify.breakpoint.xs">
       <v-btn @click="copy()">
         <v-icon class="mx-2"> mdi-content-copy </v-icon>
-        {{ $vuetify.lang.t(`$vuetify.copy`) }}
+        <span v-if="!$vuetify.breakpoint.xs">{{
+          $vuetify.lang.t(`$vuetify.copy`)
+        }}</span>
       </v-btn>
       <v-btn @click="copy()">
         <v-icon class="mx-2"> mdi-file-pdf-box </v-icon>
-        {{ $vuetify.lang.t(`$vuetify.pdf`) }}
+        <span v-if="!$vuetify.breakpoint.xs">{{
+          $vuetify.lang.t(`$vuetify.pdf`)
+        }}</span>
       </v-btn>
       <v-btn @click="copy()">
         <v-icon class="mx-2"> mdi-microsoft-excel </v-icon>
-        {{ $vuetify.lang.t(`$vuetify.excel`) }}
+        <span v-if="!$vuetify.breakpoint.xs">{{
+          $vuetify.lang.t(`$vuetify.excel`)
+        }}</span>
       </v-btn>
       <v-btn @click="copy()">
         <v-icon class="mx-2"> mdi-code-json </v-icon>
-        {{ $vuetify.lang.t(`$vuetify.json`) }}
+        <span v-if="!$vuetify.breakpoint.xs">{{
+          $vuetify.lang.t(`$vuetify.json`)
+        }}</span>
       </v-btn>
       <v-btn @click="copy()">
         <v-icon class="mx-2"> mdi-printer-outline </v-icon>
-        {{ $vuetify.lang.t(`$vuetify.print`) }}
+        <span v-if="!$vuetify.breakpoint.xs">{{
+          $vuetify.lang.t(`$vuetify.print`)
+        }}</span>
       </v-btn>
     </v-btn-toggle>
     <v-simple-table id="datatable" class="dataTable my-4">

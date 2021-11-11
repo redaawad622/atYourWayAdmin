@@ -248,5 +248,5 @@ export default {
   "edit country": "edit country",
   "edit state": "edit state",
   "view states": "View states",
-
+  "my store": "my store",
 };

@@ -244,9 +244,8 @@ export default {
   "country states": "محافظات ({0})",
   "edit state name": "تعديل اسم المحافظة",
   "remove state": "مسح المحافظة",
-  "edit country":"تعديل الدولة",
-  "edit state":"تعديل المحافظة",
-  "view states":"المحافظات",
-
-
+  "edit country": "تعديل الدولة",
+  "edit state": "تعديل المحافظة",
+  "view states": "المحافظات",
+  "my store": "متجري",
 };
