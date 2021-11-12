@@ -13,4 +13,5 @@ export default {
   generate: "api/generate",
   country: "api/country",
   state: "api/state",
+  payment: "api/payment",
 };

@@ -126,13 +126,18 @@ export default {
       { title: "countries", to: "/countries", icon: "mdi-sort-ascending" },
       {
         title: "settings",
-        icon: "mdi-cog",
+        icon: "mdi-cogs",
         children: [
           { title: "general settings", to: "/setting", icon: "mdi-cog" },
           {
             title: "payment settings",
             to: "/setting/payment",
-            icon: "mdi-cog",
+            icon: "mdi-credit-card-settings-outline",
+          },
+          {
+            title: "shipping settings",
+            to: "/setting/shipping",
+            icon: "mdi-truck-cargo-container",
           },
         ],
       },

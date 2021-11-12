@@ -134,6 +134,9 @@
               <template v-else-if="row.type == 'object'">{{
                 item[row.dataProp][row.objProp]
               }}</template>
+              <span v-else-if="row.type == 'price'" class="font-weight-bold">{{
+                $vuetify.lang.t("$vuetify.EGP", item[row.dataProp])
+              }}</span>
               <template v-else>{{ item[row.dataProp] }}</template>
             </td>
             <td v-if="option">

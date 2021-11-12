@@ -9,6 +9,7 @@ import Product from "./modules/Product";
 import Order from "./modules/Order";
 import Setting from "./modules/Setting";
 import Country from "./modules/Country";
+import Payments from "./modules/Payments";
 
 Vue.use(Vuex);
 
@@ -26,5 +27,6 @@ export default new Vuex.Store({
     Order,
     Setting,
     Country,
+    Payments,
   },
 });

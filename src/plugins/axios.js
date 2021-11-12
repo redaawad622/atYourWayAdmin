@@ -2,6 +2,7 @@
 
 import Vue from "vue";
 import axios from "axios";
+import store from "../../src/store";
 
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
@@ -46,6 +47,9 @@ _axios.interceptors.response.use(
   },
   function (error) {
     // Do something with response error
+    console.log(store);
+    if (error.response.status == 401) store.dispatch("Auth/logout");
+
     return Promise.reject(error);
   }
 );

@@ -45,6 +45,7 @@ export default {
       editItem: null,
       columns: [
         { name: "name", dataProp: "name", type: "text" },
+        { name: "shipping price", dataProp: "shippingPrice", type: "price" },
         { name: "create date", dataProp: "created_at", type: "date" },
       ],
       options: [

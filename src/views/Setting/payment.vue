@@ -4,26 +4,69 @@
       $vuetify.lang.t(`$vuetify.payment settings`)
     }}</v-card-title>
     <v-card class="defaultCard" elevation="0">
-      <v-card-title>reset</v-card-title>
-
       <v-card-text>
-        <v-btn
-          @click="openConfirm()"
-          :text="loading"
-          color="red"
-          :loading="loading"
-        >
-          {{ $vuetify.lang.t("$vuetify.reset all data") }}</v-btn
-        >
-        <v-btn
-          @click="openConfirmGenerate()"
-          :text="loading"
-          color="red"
-          :loading="loading"
-          >{{ $vuetify.lang.t("$vuetify.generate fake data") }}</v-btn
-        >
+        <v-list-item-subtitle class="mb-2">{{
+          $vuetify.lang.t(
+            `$vuetify.please select country to show available payment methods`
+          )
+        }}</v-list-item-subtitle>
+        <v-select
+          :items="countries"
+          item-text="name"
+          item-value="id"
+          outlined
+          v-model="country"
+          hide-details
+        ></v-select>
       </v-card-text>
     </v-card>
+    <v-expansion-panels
+      class="mt-4"
+      focusable
+      flat
+      v-if="country && settingsVal.length > 0"
+    >
+      <v-expansion-panel
+        v-for="(item, i) in settingsVal"
+        :key="'pSetting' + i"
+        class="mb-2"
+      >
+        <v-expansion-panel-header expand-icon="mdi-cog">
+          <v-list-item>
+            <v-list-item-avatar>
+              <v-img :src="srcs[item[0].code]"></v-img>
+            </v-list-item-avatar>
+            <v-list-item-title>{{
+              $vuetify.lang.current == "ar" ? item[0].ar_name : item[0].name
+            }}</v-list-item-title>
+          </v-list-item>
+        </v-expansion-panel-header>
+        <v-expansion-panel-content v-if="(item[0].code = 'cod')">
+          <v-form class="mt-4">
+            <v-text-field
+              outlined
+              :label="$vuetify.lang.t(`$vuetify.payment name`)"
+              v-model="cod.name"
+              :error-messages="serverErr['name']"
+            ></v-text-field>
+            <v-text-field
+              outlined
+              :label="$vuetify.lang.t(`$vuetify.payment arabic name`)"
+              v-model="cod.ar_name"
+              :error-messages="serverErr['ar_name']"
+            ></v-text-field>
+            <v-switch
+              v-model="cod.active"
+              :error-messages="serverErr['active']"
+              :label="$vuetify.lang.t(`$vuetify.active`)"
+            ></v-switch>
+            <v-btn color="primary">{{
+              $vuetify.lang.t(`$vuetify.save`)
+            }}</v-btn>
+          </v-form>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
   </v-container>
 </template>
 
@@ -32,94 +75,44 @@ export default {
   data() {
     return {
       loading: false,
+      country: "",
+      srcs: {
+        cod: "cod",
+      },
+      cod: {
+        name: "",
+        ar_name: "",
+        code: "cod",
+        active: false,
+      },
+      serverErr: [],
     };
   },
+  computed: {
+    countries() {
+      return this.$store.getters["Country/countries"];
+    },
+    paymentSettings() {
+      return this.$store.getters["Payments/paymentSettings"];
+    },
+    settingsVal() {
+      return this.paymentSettings ? Object.values(this.paymentSettings) : [];
+    },
+  },
   methods: {
-    openConfirm() {
-      this.$toasted.show(
-        this.$vuetify.lang.t("$vuetify.are you sure you want to reset data ?"),
-        {
-          // pass the icon name as string
-          position: "top-center",
-          fullWidth: false,
-          singleton: true,
-          action: [
-            {
-              text: this.$vuetify.lang.t("$vuetify.Cancel"),
-              onClick: (e, toastObject) => {
-                toastObject.goAway(0);
-              },
-            },
-            {
-              text: this.$vuetify.lang.t("$vuetify.Yes"),
-              onClick: (e, toastObject) => {
-                this.resetData();
-                toastObject.goAway(0);
-              },
-            },
-          ],
-        }
-      );
+    getCountries() {
+      this.$store.dispatch("Country/getCountries");
     },
-    openConfirmGenerate() {
-      this.$toasted.show(
-        this.$vuetify.lang.t(
-          "$vuetify.are you sure you want to generate fake data ?"
-        ),
-        {
-          // pass the icon name as string
-          position: "top-center",
-          fullWidth: false,
-          singleton: true,
-          action: [
-            {
-              text: this.$vuetify.lang.t("$vuetify.Cancel"),
-              onClick: (e, toastObject) => {
-                toastObject.goAway(0);
-              },
-            },
-            {
-              text: this.$vuetify.lang.t("$vuetify.Yes"),
-              onClick: (e, toastObject) => {
-                this.generateData();
-                toastObject.goAway(0);
-              },
-            },
-          ],
-        }
-      );
+  },
+  created() {
+    this.getCountries();
+  },
+  watch: {
+    country(val) {
+      this.$store.dispatch("Payments/getPaymentSetting", val);
     },
-    resetData() {
-      this.loading = true;
-      this.$store
-        .dispatch("Setting/reset")
-        .then(() => {
-          this.$toasted.success(
-            this.$vuetify.lang.t("$vuetify.reset data successfully"),
-            {
-              duration: 2000,
-            }
-          );
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    },
-    generateData() {
-      this.loading = true;
-      this.$store
-        .dispatch("Setting/generate")
-        .then(() => {
-          this.$toasted.success(
-            this.$vuetify.lang.t("$vuetify.generate data successfully"),
-            {
-              duration: 2000,
-            }
-          );
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+    paymentSettings(val) {
+      this.cod = val["cod"][0];
     },
   },
 };

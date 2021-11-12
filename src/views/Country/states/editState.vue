@@ -22,6 +22,14 @@
             :error-messages="serverErr['name']"
             :label="$vuetify.lang.t(`$vuetify.state name`)"
           ></v-combobox>
+          <v-text-field
+            outlined
+            :label="$vuetify.lang.t(`$vuetify.shipping price`)"
+            v-model="form.shippingPrice"
+            :error-messages="serverErr['shippingPrice']"
+            type="number"
+            :rules="isNumber"
+          ></v-text-field>
         </v-form>
       </v-card-text>
       <v-divider></v-divider>
@@ -56,9 +64,17 @@ export default {
       sheet: false,
       form: {
         name: "",
+        shippingPrice: 1,
       },
       loading: false,
       serverErr: [],
+      isNumber: [
+        (v) =>
+          /^\s*(?=.*[0-9])\d*(?:\.\d{1,2})?\s*$/.test(v) ||
+          this.$vuetify.lang.t(
+            `$vuetify.number must be equal or greater than 0`
+          ),
+      ],
     };
   },
   computed: {

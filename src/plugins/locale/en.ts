@@ -249,4 +249,11 @@ export default {
   "edit state": "edit state",
   "view states": "View states",
   "my store": "my store",
+  EGP: "{0} EGP",
+  "shipping price": "shipping price",
+  "shipping settings": "shipping settings",
+  "please select country to show available payment methods":
+    "Please select country to show available payment methods",
+  "payment name": "payment name",
+  "payment arabic name": "payment arabic name",
 };

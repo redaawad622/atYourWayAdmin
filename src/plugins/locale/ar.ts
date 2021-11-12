@@ -248,4 +248,10 @@ export default {
   "edit state": "تعديل المحافظة",
   "view states": "المحافظات",
   "my store": "متجري",
+  EGP: " {0} جنيه",
+  "shipping price": "سعر الشحن",
+  "shipping settings": "اعدادات الشحن",
+  "please select country to show available payment methods":"يرجى تحديد الدولة لإظهار طرق الدفع المتاحة",
+  "payment name": "اسم طريقة الدفع",
+  "payment arabic name": "الاسم العربي لطريقة الدفع",
 };

@@ -7,6 +7,7 @@ const state = {
   country: null,
   values: [],
   states: [],
+  countries: [],
 };
 // getters
 const getters = {
@@ -18,6 +19,9 @@ const getters = {
   },
   states: (state) => {
     return state.states;
+  },
+  countries: (state) => {
+    return state.countries;
   },
 };
 // actions
@@ -47,6 +51,18 @@ const actions = {
           },
         })
         .then((res) => {
+          resolve(res);
+        })
+        .catch((rej) => {
+          reject(rej);
+        });
+    });
+  },
+  getCountries({ commit }) {
+    return new Promise((resolve, reject) => {
+      Vue.axios(Api.country + "?all=1")
+        .then((res) => {
+          commit("updateCountries", res.data.data);
           resolve(res);
         })
         .catch((rej) => {
@@ -99,6 +115,9 @@ const mutations = {
   updateDataValues(state, payload) {
     state.country = payload.country;
     state.values = payload.values;
+  },
+  updateCountries(state, payload) {
+    state.countries = payload;
   },
   addValue(state, payload) {
     state.values.unshift(payload);

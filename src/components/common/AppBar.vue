@@ -40,7 +40,7 @@
         </v-list-item>
       </template>
       <v-list dense>
-        <v-list-item target="_blank" :href="user.store.link">
+        <v-list-item target="_blank" v-if="user.store" :href="user.store.link">
           <v-list-item-title class="text-capitalize">{{
             $vuetify.lang.t(`$vuetify.my store`)
           }}</v-list-item-title>
