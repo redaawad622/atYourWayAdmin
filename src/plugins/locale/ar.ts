@@ -254,4 +254,6 @@ export default {
   "please select country to show available payment methods":"يرجى تحديد الدولة لإظهار طرق الدفع المتاحة",
   "payment name": "اسم طريقة الدفع",
   "payment arabic name": "الاسم العربي لطريقة الدفع",
+  "paymob api key": "paymob api key",
+
 };

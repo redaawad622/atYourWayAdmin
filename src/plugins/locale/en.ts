@@ -256,4 +256,5 @@ export default {
     "Please select country to show available payment methods",
   "payment name": "payment name",
   "payment arabic name": "payment arabic name",
+  "paymob api key": "paymob api key",
 };

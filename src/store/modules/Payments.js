@@ -26,6 +26,17 @@ const actions = {
         });
     });
   },
+  savePayment(_, payload) {
+    return new Promise((resolve, reject) => {
+      Vue.axios.post(Api.payment +'/savePayment',payload)
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((rej) => {
+          reject(rej);
+        });
+    });
+  },
 };
 
 // mutations
