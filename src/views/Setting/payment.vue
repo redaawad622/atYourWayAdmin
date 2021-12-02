@@ -88,6 +88,15 @@
               v-model="paymob.apiKey"
               :error-messages="serverErr['apiKey']"
             ></v-textarea>
+            <v-combobox
+              multiple
+              chips
+              clearable
+              outlined
+              :label="$vuetify.lang.t(`$vuetify.paymob integrations`)"
+              v-model="paymob.option.integrations"
+              :error-messages="serverErr['option.integration']"
+            ></v-combobox>
             <v-switch
               v-model="paymob.active"
               :error-messages="serverErr['active']"
@@ -131,6 +140,9 @@ export default {
         ar_name: "",
         code: "paymob",
         active: false,
+        option: {
+          integrations: "",
+        },
       },
       reqRules: [
         (v) => !!v || this.$vuetify.lang.t(`$vuetify.input field is required`),
@@ -189,6 +201,9 @@ export default {
     paymentSettings(val) {
       this.cod = val["cod"][0];
       this.paymob = val["paymob"][0];
+      if (!this.paymob.option) {
+        this.paymob.option = {};
+      }
     },
   },
 };
