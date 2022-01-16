@@ -257,4 +257,9 @@ export default {
   "payment name": "payment name",
   "payment arabic name": "payment arabic name",
   "paymob api key": "paymob api key",
+  preview: "preview",
+  "Adjust the width and height of the image to contain the entire image":
+    "Adjust the width and height of the image to contain the entire image",
+  "Set the aspect ratio of the image": "Set the aspect ratio of the image",
+  "save changes": "save changes",
 };

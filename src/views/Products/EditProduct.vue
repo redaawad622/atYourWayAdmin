@@ -7,6 +7,9 @@
       <v-btn color="primary" to="/product/add">{{
         $vuetify.lang.t(`$vuetify.add more products`)
       }}</v-btn>
+      <v-btn color="primary" @click="previewPro = !previewPro">
+        {{ $vuetify.lang.t(`$vuetify.preview`) }}
+      </v-btn>
     </div>
 
     <v-card class="defaultCard" elevation="0" :loading="fetchProdLoading">
@@ -309,15 +312,17 @@
         </v-form>
       </v-card-text>
     </v-card>
+    <preview-product v-if="product" v-model="previewPro" :product="product"></preview-product>
   </v-container>
 </template>
 
 <script>
+import PreviewProduct from "../../components/product/PreviewProduct.vue";
 import productAtrributes from "../../components/product/productAtrributes.vue";
 import ProductOption from "../../components/product/productOption.vue";
 import Api from "../../store/Api";
 export default {
-  components: { productAtrributes, ProductOption },
+  components: { productAtrributes, ProductOption, PreviewProduct },
   computed: {
     link() {
       return Api.product;
@@ -332,6 +337,7 @@ export default {
   data() {
     return {
       model: 0,
+      previewPro: false,
       fetchProdLoading: false,
       discountValid: true,
       valid: true,

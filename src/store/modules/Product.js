@@ -114,6 +114,20 @@ const actions = {
         });
     });
   },
+  EditImage(_, payload) {
+    return new Promise((resolve, reject) => {
+      const formData = new FormData();
+      formData.append("images", JSON.stringify(payload));
+      Vue.axios
+        .post(Api.product + "/image/edit", formData)
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((rej) => {
+          reject(rej);
+        });
+    });
+  },
   AddProductAttr({ state, commit }, payload) {
     return new Promise((resolve, reject) => {
       payload.product_id = state.product.id;

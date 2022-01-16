@@ -80,7 +80,7 @@ function hexToRgb(hex) {
     : null;
 }
 
-Vue.prototype.$subStr = function (str, len) {
+Vue.prototype.$subStr = function (str, len=56) {
   if (str) {
     if (str.length <= len) {
       return str;

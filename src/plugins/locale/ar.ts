@@ -251,9 +251,14 @@ export default {
   EGP: " {0} جنيه",
   "shipping price": "سعر الشحن",
   "shipping settings": "اعدادات الشحن",
-  "please select country to show available payment methods":"يرجى تحديد الدولة لإظهار طرق الدفع المتاحة",
+  "please select country to show available payment methods":
+    "يرجى تحديد الدولة لإظهار طرق الدفع المتاحة",
   "payment name": "اسم طريقة الدفع",
   "payment arabic name": "الاسم العربي لطريقة الدفع",
   "paymob api key": "paymob api key",
-
+  preview: "عرض",
+  "Adjust the width and height of the image to contain the entire image":
+    "ضبط عرض الصورة وارتفاعها لتحتوي على كل الصورة",
+  "Set the aspect ratio of the image": "تعيين نسبة العرض إلى الارتفاع للصورة",
+  "save changes": "حفظ التغيرات",
 };
